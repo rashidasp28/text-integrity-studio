@@ -7,6 +7,8 @@ const empty = document.querySelector('#empty');
 let lastResult = null;
 let lastIntegrityResult = null;
 let lastPayloadResult = null;
+let lastRewriteAnalysis = null;
+let lastRewriteResult = null;
 const profileRules = {
   safe: ['remove_hidden', 'convert_nbsp', 'normalize_unusual_spaces', 'remove_trailing_whitespace'],
   publishing: ['remove_hidden', 'convert_nbsp', 'normalize_unusual_spaces', 'remove_trailing_whitespace', 'normalize_dashes', 'normalize_quotes', 'convert_ellipsis']
@@ -14,6 +16,16 @@ const profileRules = {
 
 source.addEventListener('input', () => {
   document.querySelector('#characters').textContent = `${source.value.length} characters`;
+  if (lastRewriteAnalysis) {
+    lastRewriteAnalysis = null;
+    lastRewriteResult = null;
+    document.querySelector('#rewrite-suggestions').hidden = true;
+    document.querySelector('#rewrite-suggestions tbody').replaceChildren();
+    document.querySelector('#rewrite-count').textContent = 'Analysis expired';
+    document.querySelector('#protected-summary').textContent = 'Text changed. Run Analyse style again.';
+    document.querySelector('#apply-rewrite').disabled = true;
+    document.querySelector('#download-rewrite').disabled = true;
+  }
 });
 
 async function request(path) {
@@ -29,6 +41,18 @@ async function request(path) {
   });
   const result = await response.json();
   if (!response.ok) throw new Error(result.error || 'Processing failed.');
+  return result;
+}
+
+async function rewriteRequest(path, acceptedIds = []) {
+  status.textContent = '';
+  const response = await fetch(path, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({text: source.value, backend: 'deterministic', accepted_ids: acceptedIds})
+  });
+  const result = await response.json();
+  if (!response.ok) throw new Error(result.error || 'Rewrite processing failed.');
   return result;
 }
 
@@ -127,6 +151,67 @@ document.querySelector('#clean').addEventListener('click', async () => {
   } catch (error) { status.textContent = error.message; }
 });
 
+function renderRewriteAnalysis(analysis) {
+  const rewriteTable = document.querySelector('#rewrite-suggestions');
+  const rewriteBody = rewriteTable.querySelector('tbody');
+  rewriteBody.replaceChildren();
+  for (const suggestion of analysis.suggestions) {
+    const row = document.createElement('tr');
+    const choose = document.createElement('td');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.value = suggestion.suggestion_id;
+    checkbox.setAttribute('aria-label', `Accept ${suggestion.suggestion_id}`);
+    choose.appendChild(checkbox);
+    row.appendChild(choose);
+    for (const value of [suggestion.original, suggestion.replacement || '(remove)', suggestion.explanation]) {
+      const cell = document.createElement('td');
+      cell.textContent = value;
+      row.appendChild(cell);
+    }
+    rewriteBody.appendChild(row);
+  }
+  rewriteTable.hidden = analysis.suggestions.length === 0;
+  document.querySelector('#rewrite-count').textContent = `${analysis.suggestions.length} suggestions`;
+  const categories = {};
+  for (const span of analysis.protected_spans) categories[span.category] = (categories[span.category] || 0) + 1;
+  document.querySelector('#protected-summary').textContent = analysis.protected_spans.length
+    ? `Protected facts: ${Object.entries(categories).map(([key, value]) => `${value} ${key}`).join(', ')}.`
+    : 'No dates, measurements, citations, URLs, emails, numbers or identifiers require protection.';
+  document.querySelector('#apply-rewrite').disabled = analysis.suggestions.length === 0;
+  document.querySelector('#download-rewrite').disabled = true;
+}
+
+document.querySelector('#analyse-rewrite').addEventListener('click', async () => {
+  try {
+    lastRewriteAnalysis = await rewriteRequest('/api/rewrite/analyse');
+    lastRewriteResult = null;
+    renderRewriteAnalysis(lastRewriteAnalysis);
+    status.textContent = lastRewriteAnalysis.suggestions.length
+      ? 'Select the style suggestions you want to accept.'
+      : 'No deterministic style refinements were identified.';
+  } catch (error) { status.textContent = error.message; }
+});
+
+document.querySelector('#apply-rewrite').addEventListener('click', async () => {
+  try {
+    const acceptedIds = [...document.querySelectorAll('#rewrite-suggestions input:checked')].map(input => input.value);
+    lastRewriteResult = await rewriteRequest('/api/rewrite/apply', acceptedIds);
+    output.value = lastRewriteResult.output;
+    renderDiff(lastRewriteResult.diff);
+    document.querySelector('#change-count').textContent = `${lastRewriteResult.accepted_suggestions.length} accepted revisions`;
+    document.querySelector('#download-rewrite').disabled = false;
+    status.textContent = lastRewriteResult.facts_preserved
+      ? 'Accepted revisions applied. All protected facts were preserved.'
+      : 'Rewrite validation failed.';
+  } catch (error) { status.textContent = error.message; }
+});
+
+document.querySelector('#download-rewrite').addEventListener('click', () => {
+  if (!lastRewriteResult) { status.textContent = 'Apply rewrite suggestions before downloading the audit.'; return; }
+  download(JSON.stringify(lastRewriteResult, null, 2), 'text-integrity-rewrite-audit.json', 'application/json');
+});
+
 document.querySelector('#review-integrity').addEventListener('click', async () => {
   try {
     lastIntegrityResult = await request('/api/integrity');
@@ -222,6 +307,8 @@ document.querySelector('#undo').addEventListener('click', () => {
   lastResult = null;
   lastIntegrityResult = null;
   lastPayloadResult = null;
+  lastRewriteAnalysis = null;
+  lastRewriteResult = null;
   renderDiff([{operation: 'equal', original: source.value, output: source.value}]);
   showChanges([]);
   document.querySelector('#change-count').textContent = '0 changes';
@@ -245,4 +332,10 @@ document.querySelector('#reset').addEventListener('click', () => {
   document.querySelector('#payloads tbody').replaceChildren();
   document.querySelector('#inventory tbody').replaceChildren();
   document.querySelector('#payload-count').textContent = 'Not inspected';
+  document.querySelector('#rewrite-suggestions').hidden = true;
+  document.querySelector('#rewrite-suggestions tbody').replaceChildren();
+  document.querySelector('#rewrite-count').textContent = 'Not analysed';
+  document.querySelector('#protected-summary').textContent = 'No protected facts have been inventoried.';
+  document.querySelector('#apply-rewrite').disabled = true;
+  document.querySelector('#download-rewrite').disabled = true;
 });
