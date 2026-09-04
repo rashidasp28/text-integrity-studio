@@ -1,0 +1,35 @@
+[
+  {
+    "case_id": "default_combined_001",
+    "title": "Verified default cleaning combination",
+    "input": "# Title\n“Hello”—world… A B C​D  \n*bold* ﬁ Ｈｅｌｌｏ Cyrillic а.",
+    "options": ["remove_hidden", "convert_nbsp", "normalize_dashes", "normalize_quotes", "convert_ellipsis", "remove_trailing_whitespace"],
+    "expected_output": "# Title\n\"Hello\"-world... A B CD\n*bold* ﬁ Ｈｅｌｌｏ Cyrillic а.",
+    "expected_findings": [
+      {"code_point": "U+200B", "count": 1, "action": "remove"},
+      {"code_point": "U+00A0", "count": 1, "action": "replace"},
+      {"code_point": "U+2014", "count": 1, "action": "replace"},
+      {"code_point": "U+201C", "count": 1, "action": "replace"},
+      {"code_point": "U+201D", "count": 1, "action": "replace"},
+      {"code_point": "U+2026", "count": 1, "action": "replace"}
+    ],
+    "source": {"kind": "black_box", "reference": "https://www.aitextclean.com/", "observed_at": "2026-09-04"},
+    "confidence": "verified",
+    "tags": ["default-profile", "unicode", "punctuation", "whitespace"]
+  },
+  {
+    "case_id": "all_options_001",
+    "title": "Verified cleaning with every option enabled",
+    "input": "# Title\n“Hello”—world… A B C​D  \n*bold* ﬁ Ｈｅｌｌｏ Cyrillic а.",
+    "options": ["remove_hidden", "convert_nbsp", "normalize_dashes", "normalize_quotes", "convert_ellipsis", "remove_trailing_whitespace", "remove_asterisks", "remove_markdown_headings", "convert_lookalikes", "normalize_nfkc"],
+    "expected_output": "Title\n\"Hello\"-world... A B CD\nbold fi Hello Cyrillic a.",
+    "expected_findings": [
+      {"code_point": "U+200B", "count": 1, "action": "remove"},
+      {"code_point": "U+0430", "count": 1, "action": "replace"},
+      {"code_point": "U+FB01", "count": 1, "action": "replace"}
+    ],
+    "source": {"kind": "black_box", "reference": "https://www.aitextclean.com/", "observed_at": "2026-09-04"},
+    "confidence": "verified",
+    "tags": ["all-options", "nfkc", "confusables", "markdown"]
+  }
+]
