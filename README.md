@@ -121,6 +121,19 @@ Apply selected suggestions after reviewing their IDs:
 text-integrity rewrite input.txt --accept S0001 --output revised.txt --report rewrite-audit.json
 ```
 
+## Authorised-corpus integrity review
+
+Version 0.6 implements the Phase 4A local review foundation. Users may load up
+to 20 TXT or Markdown sources that they own or are authorised to compare. The
+studio reports substantial exact-token passage overlap with source-specific
+evidence and a clearly labelled local coverage metric. It does not search the
+public web, classify plagiarism, predict a proprietary similarity score or
+infer AI authorship.
+
+Citation and quotation findings support reviewer decisions, legitimate
+exclusions and a downloadable audit. An optional authorship transparency
+statement can document permitted assistance and the author's verification.
+
 ## Confidence levels
 
 - `verified`: directly reproduced against a reference tool
