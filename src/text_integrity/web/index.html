@@ -95,6 +95,16 @@
       <div class="panel-title"><h2>Meaning-preserving rewrite</h2><span id="rewrite-count">Not analysed</span></div>
       <p class="disclaimer">Local deterministic suggestions only. Protected facts are validated before accepted changes are applied.</p>
       <div id="protected-summary" class="protected-summary">No protected facts have been inventoried.</div>
+      <details id="protected-details" class="inventory-details" hidden open>
+        <summary>Protected values</summary>
+        <div class="table-wrap">
+          <table id="protected-values">
+            <thead><tr><th>Value</th><th>Category</th><th>Offset</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </details>
+      <p id="rewrite-empty" class="limitations" hidden>No deterministic style suggestions were found in this text. There is nothing to apply.</p>
       <div class="table-wrap">
         <table id="rewrite-suggestions" hidden>
           <thead><tr><th>Accept</th><th>Original</th><th>Suggestion</th><th>Reason</th></tr></thead>
@@ -152,7 +162,7 @@
     <p id="status" role="status"></p>
   </main>
 
-  <footer>Text Integrity Studio 0.6.0 · Unusual Unicode is not evidence of AI authorship.</footer>
+  <footer>Text Integrity Studio 0.6.1 · Unusual Unicode is not evidence of AI authorship.</footer>
   <script src="/app.js"></script>
 </body>
 </html>
