@@ -70,6 +70,10 @@ and processing API bind only to the local computer, impose a 2 MB request
 limit, retain no text and make no external requests. Press `Ctrl+C` in the
 terminal to stop it.
 
+The visual interface supports TXT and Markdown import, Safe, Publishing and
+Custom rule selection, highlighted differences, applied-rule explanations,
+copying and downloading cleaned text, JSON audit export, undo and reset.
+
 ## Confidence levels
 
 - `verified`: directly reproduced against a reference tool
