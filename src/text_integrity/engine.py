@@ -35,6 +35,7 @@ CONFUSABLES = {
     "а": "a", "е": "e", "о": "o", "р": "p", "с": "c", "х": "x",
     "і": "i", "Α": "A", "Ο": "O", "Ρ": "P",
 }
+TAG_CHARACTERS = {chr(value) for value in range(0xE0000, 0xE0080)}
 
 
 def _code_point(character: str) -> str:
@@ -42,6 +43,8 @@ def _code_point(character: str) -> str:
 
 
 def _character_policy(character: str) -> tuple[str, Action, str, str] | None:
+    if character in TAG_CHARACTERS:
+        return "tag-character", Action.FLAG, "warning", "Unicode tag character may participate in a hidden data run."
     if character in HIDDEN_REMOVE:
         return "invisible", Action.REMOVE, "warning", "Nonprinting separator removable by the Safe profile."
     if character in UNUSUAL_SPACES:
