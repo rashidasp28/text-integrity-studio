@@ -5,6 +5,7 @@ const table = document.querySelector('#findings');
 const body = table.querySelector('tbody');
 const empty = document.querySelector('#empty');
 let lastResult = null;
+let lastIntegrityResult = null;
 const profileRules = {
   safe: ['remove_hidden', 'convert_nbsp', 'normalize_unusual_spaces', 'remove_trailing_whitespace'],
   publishing: ['remove_hidden', 'convert_nbsp', 'normalize_unusual_spaces', 'remove_trailing_whitespace', 'normalize_dashes', 'normalize_quotes', 'convert_ellipsis']
@@ -125,6 +126,47 @@ document.querySelector('#clean').addEventListener('click', async () => {
   } catch (error) { status.textContent = error.message; }
 });
 
+document.querySelector('#review-integrity').addEventListener('click', async () => {
+  try {
+    lastIntegrityResult = await request('/api/integrity');
+    const metrics = document.querySelector('#metrics');
+    metrics.replaceChildren();
+    const labels = {
+      citations_detected: 'Citations detected',
+      references_detected: 'References detected',
+      matched_references: 'Matched references',
+      unresolved_findings: 'Unresolved findings'
+    };
+    for (const [key, value] of Object.entries(lastIntegrityResult.metrics)) {
+      const item = document.createElement('div');
+      item.className = 'metric';
+      const number = document.createElement('strong');
+      number.textContent = value;
+      const label = document.createElement('span');
+      label.textContent = labels[key] || key;
+      item.append(number, label);
+      metrics.appendChild(item);
+    }
+    const integrityTable = document.querySelector('#integrity-findings');
+    const integrityBody = integrityTable.querySelector('tbody');
+    integrityBody.replaceChildren();
+    for (const finding of lastIntegrityResult.findings) {
+      const row = document.createElement('tr');
+      for (const value of [finding.category, finding.severity, finding.message, finding.evidence, finding.offset]) {
+        const cell = document.createElement('td');
+        cell.textContent = value;
+        row.appendChild(cell);
+      }
+      integrityBody.appendChild(row);
+    }
+    integrityTable.hidden = lastIntegrityResult.findings.length === 0;
+    document.querySelector('#integrity-count').textContent = `${lastIntegrityResult.findings.length} findings`;
+    status.textContent = lastIntegrityResult.findings.length
+      ? 'Review the evidence before revising your document.'
+      : 'No citation or attribution issues were identified by the local checks.';
+  } catch (error) { status.textContent = error.message; }
+});
+
 document.querySelector('#copy').addEventListener('click', async () => {
   try { await navigator.clipboard.writeText(output.value); status.textContent = 'Cleaned text copied.'; }
   catch { status.textContent = 'Clipboard permission was unavailable.'; }
@@ -143,6 +185,7 @@ document.querySelector('#download-text').addEventListener('click', () => {
 document.querySelector('#undo').addEventListener('click', () => {
   output.value = source.value;
   lastResult = null;
+  lastIntegrityResult = null;
   renderDiff([{operation: 'equal', original: source.value, output: source.value}]);
   showChanges([]);
   document.querySelector('#change-count').textContent = '0 changes';
@@ -159,4 +202,7 @@ document.querySelector('#reset').addEventListener('click', () => {
   showChanges([]);
   document.querySelector('#change-count').textContent = '0 changes';
   status.textContent = 'Workspace reset.';
+  document.querySelector('#metrics').replaceChildren();
+  document.querySelector('#integrity-findings').hidden = true;
+  document.querySelector('#integrity-count').textContent = 'Not reviewed';
 });
