@@ -22,12 +22,36 @@
       <select id="profile">
         <option value="safe">Safe</option>
         <option value="publishing">Publishing</option>
+        <option value="custom">Custom</option>
       </select>
+      <label class="file-button" for="file-input">Open TXT/MD</label>
+      <input id="file-input" type="file" accept=".txt,.md,text/plain,text/markdown" hidden>
       <button id="inspect" class="secondary">Inspect</button>
       <button id="clean">Clean text</button>
       <button id="copy" class="secondary">Copy output</button>
+      <button id="download-text" class="secondary">Download text</button>
       <button id="download" class="secondary">Download audit</button>
+      <button id="undo" class="secondary">Undo cleaning</button>
+      <button id="reset" class="danger">Reset</button>
     </section>
+
+    <details id="rules" class="card rules-card">
+      <summary>Individual cleaning rules <span>Choose Custom to control these options</span></summary>
+      <div class="rule-grid">
+        <label><input type="checkbox" value="remove_hidden"> Remove hidden separators</label>
+        <label><input type="checkbox" value="convert_nbsp"> Convert non-breaking spaces</label>
+        <label><input type="checkbox" value="normalize_unusual_spaces"> Normalise unusual spaces</label>
+        <label><input type="checkbox" value="remove_trailing_whitespace"> Remove trailing whitespace</label>
+        <label><input type="checkbox" value="normalize_dashes"> Normalise dashes</label>
+        <label><input type="checkbox" value="normalize_quotes"> Normalise quotation marks</label>
+        <label><input type="checkbox" value="convert_ellipsis"> Convert ellipses</label>
+        <label><input type="checkbox" value="repair_encoding"> Repair common mojibake</label>
+        <label><input type="checkbox" value="normalize_nfkc"> Apply NFKC normalisation</label>
+        <label><input type="checkbox" value="remove_asterisks"> Remove asterisks</label>
+        <label><input type="checkbox" value="remove_markdown_headings"> Remove Markdown headings</label>
+        <label><input type="checkbox" value="convert_lookalikes"> Convert selected lookalikes</label>
+      </div>
+    </details>
 
     <section class="editors">
       <article class="card editor-card">
@@ -49,6 +73,19 @@
           <tbody></tbody>
         </table>
       </div>
+    </section>
+
+    <section class="card diff-card">
+      <div class="panel-title"><h2>Highlighted differences</h2><span>Removed / added</span></div>
+      <div class="diff-grid">
+        <pre id="diff-original" aria-label="Original text differences"></pre>
+        <pre id="diff-output" aria-label="Cleaned text differences"></pre>
+      </div>
+    </section>
+
+    <section class="card changes-card">
+      <div class="panel-title"><h2>Applied changes</h2><span id="applied-count">0 applied rules</span></div>
+      <ol id="changes"><li>No cleaning has been run.</li></ol>
     </section>
     <p id="status" role="status"></p>
   </main>
