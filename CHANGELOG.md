@@ -2,6 +2,12 @@
 
 All notable changes are documented here.
 
+## 0.6.1 - 2026-09-04
+
+- Display every protected value with its category and exact character range.
+- Explain explicitly when deterministic analysis produces no suggestions.
+- Give disabled actions a visibly inactive state and explanatory tooltip.
+
 ## 0.6.0 - 2026-09-04
 
 - Complete the Phase 4A local integrity-review foundation.
