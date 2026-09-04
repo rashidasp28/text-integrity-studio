@@ -8,7 +8,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from text_integrity import __version__, analyse_rewrite, apply_rewrite, clean, inspect, inspect_payloads
 from text_integrity.studio import build_diff, process_api
-from text_integrity.integrity import review_integrity
+from text_integrity.integrity import build_integrity_audit, review_integrity
 
 
 def all_cases():
@@ -18,7 +18,7 @@ def all_cases():
 
 class EngineTests(unittest.TestCase):
     def test_release_version(self):
-        self.assertEqual(__version__, "0.5.0")
+        self.assertEqual(__version__, "0.6.0")
 
     def test_every_corpus_case_has_exact_output(self):
         for case in all_cases():
@@ -152,6 +152,35 @@ class EngineTests(unittest.TestCase):
     def test_rewrite_rejects_duplicate_acceptance(self):
         with self.assertRaisesRegex(ValueError, "only once"):
             apply_rewrite("In order to proceed.", ["S0001", "S0001"])
+
+    def test_chained_rewrite_capitalises_exposed_sentence_start(self):
+        text = "It is important to note that in order to complete the experiment, we measured 7.3 mW."
+        analysis = analyse_rewrite(text)
+        accepted = [item["suggestion_id"] for item in analysis["suggestions"]]
+        result = apply_rewrite(text, accepted)
+        self.assertEqual(result["output"], "To complete the experiment, we measured 7.3 mW.")
+        self.assertTrue(result["facts_preserved"])
+
+    def test_authorised_corpus_comparison_reports_passage_evidence(self):
+        passage = "The directional freezing platform maintained a stable thermal gradient while cells crossed the observation window during imaging."
+        report = review_integrity(passage, comparison_sources=[{"name": "my-paper.txt", "text": passage}])
+        matches = [item for item in report["findings"] if item["category"] == "authorised-corpus-match"]
+        self.assertEqual(len(matches), 1)
+        self.assertEqual(matches[0]["source"], "my-paper.txt")
+        self.assertEqual(report["metrics"]["authorised_sources"], 1)
+        self.assertGreater(report["metrics"]["matched_text_coverage_percent"], 90)
+
+    def test_integrity_review_exclusions_preserve_audit_evidence(self):
+        report = review_integrity("Text.\n\nReferences\nSmith, J. (2024). Study.", exclusions=["bibliography"])
+        self.assertEqual(report["findings"], [])
+        self.assertEqual(report["excluded"][0]["status"], "excluded")
+
+    def test_integrity_audit_records_reviewer_decision(self):
+        report = review_integrity("Claim (Jones, 2025).")
+        finding_id = report["findings"][0]["finding_id"]
+        audit = build_integrity_audit(report, {finding_id: "reviewed"}, "AI assisted with grammar; the author verified all facts.")
+        self.assertEqual(audit["metrics"]["reviewed"], 1)
+        self.assertIn("author verified", audit["authorship_transparency_statement"])
 
 
 if __name__ == "__main__":
