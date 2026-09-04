@@ -15,7 +15,7 @@ from typing import Any
 from urllib.parse import urlparse
 
 from .engine import clean, inspect
-from .integrity import review_integrity
+from .integrity import build_integrity_audit, review_integrity
 from .payloads import inspect_payloads
 from .rewrite import analyse_rewrite, apply_rewrite
 
@@ -54,7 +54,20 @@ def process_api(path: str, payload: dict[str, Any]) -> Any:
         result["diff"] = build_diff(text, result["output"])
         return result
     if path == "/api/integrity":
-        return review_integrity(text)
+        return review_integrity(
+            text,
+            comparison_sources=payload.get("comparison_sources", []),
+            exclusions=payload.get("exclusions", []),
+        )
+    if path == "/api/integrity/audit":
+        report = payload.get("report")
+        if not isinstance(report, dict):
+            raise ValueError("The integrity report is required before exporting an audit.")
+        return build_integrity_audit(
+            report,
+            payload.get("decisions", {}),
+            payload.get("transparency_statement", ""),
+        )
     if path == "/api/payloads":
         return inspect_payloads(text)
     if path == "/api/rewrite/analyse":
