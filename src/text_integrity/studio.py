@@ -15,6 +15,7 @@ from typing import Any
 from urllib.parse import urlparse
 
 from .engine import clean, inspect
+from .integrity import review_integrity
 
 MAX_REQUEST_BYTES = 2 * 1024 * 1024
 WEB_ROOT = files("text_integrity").joinpath("web")
@@ -50,6 +51,8 @@ def process_api(path: str, payload: dict[str, Any]) -> Any:
         result = clean(text, profile=profile, options=options).as_dict()
         result["diff"] = build_diff(text, result["output"])
         return result
+    if path == "/api/integrity":
+        return review_integrity(text)
     raise ValueError("Unknown API endpoint.")
 
 
