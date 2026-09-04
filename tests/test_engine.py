@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from text_integrity import clean, inspect
-from text_integrity.studio import process_api
+from text_integrity.studio import build_diff, process_api
 
 
 def all_cases():
@@ -55,6 +55,19 @@ class EngineTests(unittest.TestCase):
     def test_studio_api_rejects_invalid_payload(self):
         with self.assertRaisesRegex(ValueError, "text"):
             process_api("/api/inspect", {"text": 42})
+
+    def test_custom_rules_and_diff(self):
+        result = process_api(
+            "/api/clean",
+            {"text": "A—B…", "profile": None, "options": ["normalize_dashes"]},
+        )
+        self.assertEqual(result["output"], "A-B…")
+        self.assertTrue(any(segment["operation"] == "replace" for segment in result["diff"]))
+
+    def test_diff_round_trip(self):
+        diff = build_diff("old", "bold")
+        self.assertEqual("".join(part["original"] for part in diff), "old")
+        self.assertEqual("".join(part["output"] for part in diff), "bold")
 
 
 if __name__ == "__main__":
