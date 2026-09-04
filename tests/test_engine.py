@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from text_integrity import __version__, clean, inspect, inspect_payloads
+from text_integrity import __version__, analyse_rewrite, apply_rewrite, clean, inspect, inspect_payloads
 from text_integrity.studio import build_diff, process_api
 from text_integrity.integrity import review_integrity
 
@@ -18,7 +18,7 @@ def all_cases():
 
 class EngineTests(unittest.TestCase):
     def test_release_version(self):
-        self.assertEqual(__version__, "0.4.0")
+        self.assertEqual(__version__, "0.5.0")
 
     def test_every_corpus_case_has_exact_output(self):
         for case in all_cases():
@@ -119,6 +119,39 @@ class EngineTests(unittest.TestCase):
         report = process_api("/api/payloads", {"text": "A\u200bB"})
         self.assertEqual(report["inventory"][1]["visible"], "<ZWSP>")
         self.assertIn("not confirmed AI watermarks", report["disclaimer"])
+
+    def test_rewrite_analysis_protects_scientific_facts(self):
+        text = "In order to test 7.3 mW on 9 September 2026, we recorded data (Smith, 2024)."
+        report = analyse_rewrite(text)
+        self.assertEqual(report["suggestions"][0]["replacement"], "To")
+        protected = {(span["category"], span["text"]) for span in report["protected_spans"]}
+        self.assertIn(("measurement", "7.3 mW"), protected)
+        self.assertIn(("date", "9 September 2026"), protected)
+        self.assertIn(("citation", "(Smith, 2024)"), protected)
+
+    def test_rewrite_applies_only_accepted_suggestions(self):
+        text = "In order to proceed prior to imaging, we prepared samples."
+        analysis = analyse_rewrite(text)
+        result = apply_rewrite(text, [analysis["suggestions"][0]["suggestion_id"]])
+        self.assertTrue(result["facts_preserved"])
+        self.assertIn("To proceed prior to imaging", result["output"])
+        self.assertEqual(len(result["accepted_suggestions"]), 1)
+        self.assertEqual(len(result["rejected_suggestion_ids"]), 1)
+
+    def test_rewrite_rejects_unknown_suggestion(self):
+        with self.assertRaisesRegex(ValueError, "Unknown rewrite suggestion"):
+            apply_rewrite("In order to proceed.", ["S9999"])
+
+    def test_rewrite_api_round_trip(self):
+        analysis = process_api("/api/rewrite/analyse", {"text": "Due to the fact that it rained, we stopped."})
+        suggestion_id = analysis["suggestions"][0]["suggestion_id"]
+        result = process_api("/api/rewrite/apply", {"text": "Due to the fact that it rained, we stopped.", "accepted_ids": [suggestion_id]})
+        self.assertEqual(result["output"], "Because it rained, we stopped.")
+        self.assertTrue(any(segment["operation"] == "replace" for segment in result["diff"]))
+
+    def test_rewrite_rejects_duplicate_acceptance(self):
+        with self.assertRaisesRegex(ValueError, "only once"):
+            apply_rewrite("In order to proceed.", ["S0001", "S0001"])
 
 
 if __name__ == "__main__":
