@@ -57,6 +57,19 @@ opt-in rules through repeated `--rule` options.
 The engine runs locally and does not transmit or retain source text. Findings
 identify unusual characters and policy decisions, not AI authorship.
 
+## Visual studio preview
+
+Start the local visual interface:
+
+```bash
+text-integrity studio
+```
+
+The tool opens `http://127.0.0.1:8765` in the default browser. The interface
+and processing API bind only to the local computer, impose a 2 MB request
+limit, retain no text and make no external requests. Press `Ctrl+C` in the
+terminal to stop it.
+
 ## Confidence levels
 
 - `verified`: directly reproduced against a reference tool
