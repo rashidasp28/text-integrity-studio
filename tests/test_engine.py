@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from text_integrity import clean, inspect
+from text_integrity import __version__, clean, inspect
 from text_integrity.studio import build_diff, process_api
 from text_integrity.integrity import review_integrity
 
@@ -17,6 +17,9 @@ def all_cases():
 
 
 class EngineTests(unittest.TestCase):
+    def test_release_version(self):
+        self.assertEqual(__version__, "0.3.0")
+
     def test_every_corpus_case_has_exact_output(self):
         for case in all_cases():
             with self.subTest(case=case["case_id"]):
