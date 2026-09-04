@@ -16,6 +16,7 @@ from urllib.parse import urlparse
 
 from .engine import clean, inspect
 from .integrity import review_integrity
+from .payloads import inspect_payloads
 
 MAX_REQUEST_BYTES = 2 * 1024 * 1024
 WEB_ROOT = files("text_integrity").joinpath("web")
@@ -53,6 +54,8 @@ def process_api(path: str, payload: dict[str, Any]) -> Any:
         return result
     if path == "/api/integrity":
         return review_integrity(text)
+    if path == "/api/payloads":
+        return inspect_payloads(text)
     raise ValueError("Unknown API endpoint.")
 
 
