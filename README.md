@@ -6,6 +6,10 @@ Local-first Unicode inspection, safe text cleaning and optional meaning-preservi
 
 Phase 0 is active: behavioural evidence and executable acceptance tests.
 
+The initial corpus contains 115 cases spanning character controls, whitespace,
+punctuation, compatibility normalisation, bidirectional text, contextual
+joiners, confusables, protected structures and encoding repair.
+
 This project does not claim that unusual Unicode characters prove AI authorship, or that removing characters changes an AI detector's verdict.
 
 ## Behavioural corpus
