@@ -4,10 +4,13 @@ build-backend = "hatchling.build"
 
 [project]
 name = "text-integrity-studio"
-version = "0.0.1"
+version = "0.1.0"
 description = "Local-first Unicode inspection and safe text-cleaning framework"
 requires-python = ">=3.11"
 dependencies = []
+
+[project.scripts]
+text-integrity = "text_integrity.cli:main"
 
 [project.optional-dependencies]
 test = ["pytest>=8.0", "jsonschema>=4.21"]
