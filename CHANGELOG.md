@@ -2,6 +2,16 @@
 
 All notable changes are documented here.
 
+## 0.6.0 - 2026-09-04
+
+- Complete the Phase 4A local integrity-review foundation.
+- Compare drafts only with text files deliberately supplied by the user.
+- Report passage-level evidence, source names and local matched-text coverage.
+- Add legitimate bibliography and quotation exclusions without deleting content.
+- Record reviewed, dismissed, unresolved and excluded findings in an exportable audit.
+- Add an optional authorship transparency statement.
+- Correct sentence capitalization when accepted rewrite deletions expose a new sentence start.
+
 ## 0.5.0 - 2026-09-04
 
 - Add the Phase 4 deterministic style-analysis backend and public backend interface.
