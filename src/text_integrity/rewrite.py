@@ -103,7 +103,31 @@ class DeterministicStyleBackend:
                     match.group(), actual, explanation,
                 ))
                 reserved.update(positions)
-        return tuple(sorted(suggestions, key=lambda item: item.start))
+        ordered = sorted(suggestions, key=lambda item: item.start)
+        # When an accepted deletion exposes a following suggestion at a
+        # sentence boundary, compose the preview so the new sentence begins
+        # with a capital letter. The adjustment remains part of that explicit
+        # suggestion rather than becoming a silent post-processing edit.
+        composed: list[RewriteSuggestion] = []
+        for index, suggestion in enumerate(ordered):
+            replacement = suggestion.replacement
+            if replacement and replacement[:1].islower():
+                prefix = text[:suggestion.start]
+                preceding = ordered[index - 1] if index else None
+                deletion_exposes_boundary = (
+                    preceding is not None
+                    and preceding.replacement == ""
+                    and text[preceding.end:suggestion.start].strip() == ""
+                    and not prefix[:preceding.start].strip()
+                )
+                sentence_boundary = not prefix.strip() or bool(re.search(r"[.!?]\s*$", prefix))
+                if deletion_exposes_boundary or sentence_boundary:
+                    replacement = replacement[:1].upper() + replacement[1:]
+            composed.append(RewriteSuggestion(
+                suggestion.suggestion_id, suggestion.rule_id, suggestion.start,
+                suggestion.end, suggestion.original, replacement, suggestion.explanation,
+            ))
+        return tuple(composed)
 
 
 def analyse_rewrite(text: str, *, backend: str = "deterministic") -> dict[str, object]:
