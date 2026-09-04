@@ -8,6 +8,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from text_integrity import clean, inspect
 from text_integrity.studio import build_diff, process_api
+from text_integrity.integrity import review_integrity
 
 
 def all_cases():
@@ -68,6 +69,31 @@ class EngineTests(unittest.TestCase):
         diff = build_diff("old", "bold")
         self.assertEqual("".join(part["original"] for part in diff), "old")
         self.assertEqual("".join(part["output"] for part in diff), "bold")
+
+    def test_integrity_review_reconciles_author_year_citation(self):
+        report = review_integrity(
+            "Evidence supports this (Smith, 2024).\n\nReferences\nSmith, J. (2024). Example study."
+        )
+        self.assertEqual(report["metrics"]["citations_detected"], 1)
+        self.assertEqual(report["metrics"]["matched_references"], 1)
+        self.assertEqual(report["findings"], [])
+
+    def test_integrity_review_flags_missing_reference_and_uncited_entry(self):
+        report = review_integrity(
+            "A claim (Jones, 2025).\n\nReferences\nSmith, J. (2024). Example study."
+        )
+        categories = {finding["category"] for finding in report["findings"]}
+        self.assertEqual(categories, {"citation-without-reference", "uncited-reference"})
+
+    def test_integrity_review_flags_long_unattributed_quote(self):
+        report = review_integrity(
+            'The source states “This is a sufficiently long quotation that needs a nearby citation for attribution.”'
+        )
+        self.assertEqual(report["findings"][0]["category"], "quotation-attribution")
+
+    def test_integrity_api_uses_local_reviewer(self):
+        report = process_api("/api/integrity", {"text": "No citations here."})
+        self.assertIn("Turnitin score prediction", report["disclaimer"])
 
 
 if __name__ == "__main__":
