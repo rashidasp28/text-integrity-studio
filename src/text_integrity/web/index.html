@@ -28,6 +28,7 @@
       <input id="file-input" type="file" accept=".txt,.md,text/plain,text/markdown" hidden>
       <button id="inspect" class="secondary">Inspect</button>
       <button id="clean">Clean text</button>
+      <button id="review-integrity" class="secondary">Review integrity</button>
       <button id="copy" class="secondary">Copy output</button>
       <button id="download-text" class="secondary">Download text</button>
       <button id="download" class="secondary">Download audit</button>
@@ -86,6 +87,18 @@
     <section class="card changes-card">
       <div class="panel-title"><h2>Applied changes</h2><span id="applied-count">0 applied rules</span></div>
       <ol id="changes"><li>No cleaning has been run.</li></ol>
+    </section>
+
+    <section class="card integrity-card">
+      <div class="panel-title"><h2>Pre-submission integrity review</h2><span id="integrity-count">Not reviewed</span></div>
+      <p class="disclaimer">Local citation and attribution diagnostics only. This is not a plagiarism verdict or a Turnitin score prediction.</p>
+      <div id="metrics" class="metrics"></div>
+      <div class="table-wrap">
+        <table id="integrity-findings" hidden>
+          <thead><tr><th>Category</th><th>Severity</th><th>Finding</th><th>Evidence</th><th>Offset</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </section>
     <p id="status" role="status"></p>
   </main>
