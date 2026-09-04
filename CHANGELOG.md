@@ -2,6 +2,14 @@
 
 All notable changes are documented here.
 
+## 0.5.0 - 2026-09-04
+
+- Add the Phase 4 deterministic style-analysis backend and public backend interface.
+- Protect measurements, dates, citations, numbers, URLs, emails and identifiers during revision.
+- Add individually selectable rewrite suggestions with accept, reject and audit controls.
+- Validate protected facts before producing revised output.
+- Add CLI and local API support for rewrite analysis and application.
+
 ## 0.4.0 - 2026-09-04
 
 - Add complete code-point inventory with visible labels for invisible characters.
