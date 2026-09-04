@@ -2,6 +2,13 @@
 
 All notable changes are documented here.
 
+## 0.4.0 - 2026-09-04
+
+- Add complete code-point inventory with visible labels for invisible characters.
+- Add Unicode tag, zero-width binary and variation-selector run analysis.
+- Decode only recognised payloads that produce printable UTF-8.
+- Label every decoded result as a possible payload rather than an AI watermark.
+
 ## 0.3.0 - 2026-09-04
 
 - Add reproducible standalone alpha builds for Windows, macOS and Linux.
