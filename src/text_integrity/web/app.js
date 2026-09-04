@@ -29,6 +29,9 @@ source.addEventListener('input', () => {
     document.querySelector('#rewrite-suggestions tbody').replaceChildren();
     document.querySelector('#rewrite-count').textContent = 'Analysis expired';
     document.querySelector('#protected-summary').textContent = 'Text changed. Run Analyse style again.';
+    document.querySelector('#protected-details').hidden = true;
+    document.querySelector('#protected-values tbody').replaceChildren();
+    document.querySelector('#rewrite-empty').hidden = true;
     document.querySelector('#apply-rewrite').disabled = true;
     document.querySelector('#download-rewrite').disabled = true;
   }
@@ -201,7 +204,23 @@ function renderRewriteAnalysis(analysis) {
   document.querySelector('#protected-summary').textContent = analysis.protected_spans.length
     ? `Protected facts: ${Object.entries(categories).map(([key, value]) => `${value} ${key}`).join(', ')}.`
     : 'No dates, measurements, citations, URLs, emails, numbers or identifiers require protection.';
+  const protectedBody = document.querySelector('#protected-values tbody');
+  protectedBody.replaceChildren();
+  for (const span of analysis.protected_spans) {
+    const row = document.createElement('tr');
+    for (const value of [span.text, span.category, `${span.start}–${span.end}`]) {
+      const cell = document.createElement('td');
+      cell.textContent = value;
+      row.appendChild(cell);
+    }
+    protectedBody.appendChild(row);
+  }
+  document.querySelector('#protected-details').hidden = analysis.protected_spans.length === 0;
+  document.querySelector('#rewrite-empty').hidden = analysis.suggestions.length !== 0;
   document.querySelector('#apply-rewrite').disabled = analysis.suggestions.length === 0;
+  document.querySelector('#apply-rewrite').title = analysis.suggestions.length
+    ? 'Apply the rewrite suggestions selected above.'
+    : 'No suggestions are available to apply.';
   document.querySelector('#download-rewrite').disabled = true;
 }
 
@@ -404,6 +423,9 @@ document.querySelector('#reset').addEventListener('click', () => {
   document.querySelector('#rewrite-suggestions tbody').replaceChildren();
   document.querySelector('#rewrite-count').textContent = 'Not analysed';
   document.querySelector('#protected-summary').textContent = 'No protected facts have been inventoried.';
+  document.querySelector('#protected-details').hidden = true;
+  document.querySelector('#protected-values tbody').replaceChildren();
+  document.querySelector('#rewrite-empty').hidden = true;
   document.querySelector('#apply-rewrite').disabled = true;
   document.querySelector('#download-rewrite').disabled = true;
 });
