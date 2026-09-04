@@ -6,6 +6,7 @@ const body = table.querySelector('tbody');
 const empty = document.querySelector('#empty');
 let lastResult = null;
 let lastIntegrityResult = null;
+let lastPayloadResult = null;
 const profileRules = {
   safe: ['remove_hidden', 'convert_nbsp', 'normalize_unusual_spaces', 'remove_trailing_whitespace'],
   publishing: ['remove_hidden', 'convert_nbsp', 'normalize_unusual_spaces', 'remove_trailing_whitespace', 'normalize_dashes', 'normalize_quotes', 'convert_ellipsis']
@@ -167,6 +168,40 @@ document.querySelector('#review-integrity').addEventListener('click', async () =
   } catch (error) { status.textContent = error.message; }
 });
 
+document.querySelector('#inspect-payloads').addEventListener('click', async () => {
+  try {
+    lastPayloadResult = await request('/api/payloads');
+    const payloadTable = document.querySelector('#payloads');
+    const payloadBody = payloadTable.querySelector('tbody');
+    payloadBody.replaceChildren();
+    for (const payload of lastPayloadResult.payloads) {
+      const row = document.createElement('tr');
+      for (const value of [payload.codec, `${payload.start}–${payload.end}`, payload.character_count, payload.decoded_text || 'Not decoded', payload.confidence, payload.explanation]) {
+        const cell = document.createElement('td');
+        cell.textContent = value;
+        row.appendChild(cell);
+      }
+      payloadBody.appendChild(row);
+    }
+    payloadTable.hidden = lastPayloadResult.payloads.length === 0;
+    const inventoryBody = document.querySelector('#inventory tbody');
+    inventoryBody.replaceChildren();
+    for (const item of lastPayloadResult.inventory) {
+      const row = document.createElement('tr');
+      for (const value of [item.offset, item.visible, item.code_point, item.name, item.category]) {
+        const cell = document.createElement('td');
+        cell.textContent = value;
+        row.appendChild(cell);
+      }
+      inventoryBody.appendChild(row);
+    }
+    document.querySelector('#payload-count').textContent = `${lastPayloadResult.payloads.length} possible payloads`;
+    status.textContent = lastPayloadResult.payloads.length
+      ? 'Possible encoded data found. Review the codec, decoded text and confidence.'
+      : 'No recognised encoded payload was found. Review the raw inventory for individual characters.';
+  } catch (error) { status.textContent = error.message; }
+});
+
 document.querySelector('#copy').addEventListener('click', async () => {
   try { await navigator.clipboard.writeText(output.value); status.textContent = 'Cleaned text copied.'; }
   catch { status.textContent = 'Clipboard permission was unavailable.'; }
@@ -186,6 +221,7 @@ document.querySelector('#undo').addEventListener('click', () => {
   output.value = source.value;
   lastResult = null;
   lastIntegrityResult = null;
+  lastPayloadResult = null;
   renderDiff([{operation: 'equal', original: source.value, output: source.value}]);
   showChanges([]);
   document.querySelector('#change-count').textContent = '0 changes';
@@ -205,4 +241,8 @@ document.querySelector('#reset').addEventListener('click', () => {
   document.querySelector('#metrics').replaceChildren();
   document.querySelector('#integrity-findings').hidden = true;
   document.querySelector('#integrity-count').textContent = 'Not reviewed';
+  document.querySelector('#payloads').hidden = true;
+  document.querySelector('#payloads tbody').replaceChildren();
+  document.querySelector('#inventory tbody').replaceChildren();
+  document.querySelector('#payload-count').textContent = 'Not inspected';
 });
