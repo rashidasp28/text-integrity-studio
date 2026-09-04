@@ -1,0 +1,2804 @@
+[
+  {
+    "case_id": "control_00ad_001",
+    "title": "soft hyphen policy",
+    "input": "A­B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A­B",
+    "expected_findings": [
+      {
+        "code_point": "U+00AD",
+        "count": 1,
+        "action": "preserve"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "soft-hyphen"
+    ]
+  },
+  {
+    "case_id": "control_034f_001",
+    "title": "combining grapheme joiner policy",
+    "input": "A͏B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A͏B",
+    "expected_findings": [
+      {
+        "code_point": "U+034F",
+        "count": 1,
+        "action": "preserve"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "combining-grapheme-joiner"
+    ]
+  },
+  {
+    "case_id": "control_061c_001",
+    "title": "Arabic letter mark policy",
+    "input": "A؜B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A؜B",
+    "expected_findings": [
+      {
+        "code_point": "U+061C",
+        "count": 1,
+        "action": "preserve"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "Arabic-letter-mark"
+    ]
+  },
+  {
+    "case_id": "control_115f_001",
+    "title": "Hangul choseong filler policy",
+    "input": "AᅟB",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "AᅟB",
+    "expected_findings": [
+      {
+        "code_point": "U+115F",
+        "count": 1,
+        "action": "preserve"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "Hangul-choseong-filler"
+    ]
+  },
+  {
+    "case_id": "control_180e_001",
+    "title": "Mongolian vowel separator policy",
+    "input": "A᠎B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A᠎B",
+    "expected_findings": [
+      {
+        "code_point": "U+180E",
+        "count": 1,
+        "action": "preserve"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "Mongolian-vowel-separator"
+    ]
+  },
+  {
+    "case_id": "control_200b_001",
+    "title": "zero-width space policy",
+    "input": "A​B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "AB",
+    "expected_findings": [
+      {
+        "code_point": "U+200B",
+        "count": 1,
+        "action": "remove"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "zero-width-space"
+    ]
+  },
+  {
+    "case_id": "control_200c_001",
+    "title": "zero-width non-joiner policy",
+    "input": "A‌B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A‌B",
+    "expected_findings": [
+      {
+        "code_point": "U+200C",
+        "count": 1,
+        "action": "preserve"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "zero-width-non-joiner"
+    ]
+  },
+  {
+    "case_id": "control_200d_001",
+    "title": "zero-width joiner policy",
+    "input": "A‍B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A‍B",
+    "expected_findings": [
+      {
+        "code_point": "U+200D",
+        "count": 1,
+        "action": "preserve"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "zero-width-joiner"
+    ]
+  },
+  {
+    "case_id": "control_200e_001",
+    "title": "left-to-right mark policy",
+    "input": "A‎B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A‎B",
+    "expected_findings": [
+      {
+        "code_point": "U+200E",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "left-to-right-mark"
+    ]
+  },
+  {
+    "case_id": "control_200f_001",
+    "title": "right-to-left mark policy",
+    "input": "A‏B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A‏B",
+    "expected_findings": [
+      {
+        "code_point": "U+200F",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "right-to-left-mark"
+    ]
+  },
+  {
+    "case_id": "control_202a_001",
+    "title": "left-to-right embedding policy",
+    "input": "A‪B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A‪B",
+    "expected_findings": [
+      {
+        "code_point": "U+202A",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "left-to-right-embedding"
+    ]
+  },
+  {
+    "case_id": "control_202b_001",
+    "title": "right-to-left embedding policy",
+    "input": "A‫B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A‫B",
+    "expected_findings": [
+      {
+        "code_point": "U+202B",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "right-to-left-embedding"
+    ]
+  },
+  {
+    "case_id": "control_202c_001",
+    "title": "pop directional formatting policy",
+    "input": "A‬B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A‬B",
+    "expected_findings": [
+      {
+        "code_point": "U+202C",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "pop-directional-formatting"
+    ]
+  },
+  {
+    "case_id": "control_202d_001",
+    "title": "left-to-right override policy",
+    "input": "A‭B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A‭B",
+    "expected_findings": [
+      {
+        "code_point": "U+202D",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "left-to-right-override"
+    ]
+  },
+  {
+    "case_id": "control_202e_001",
+    "title": "right-to-left override policy",
+    "input": "A‮B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A‮B",
+    "expected_findings": [
+      {
+        "code_point": "U+202E",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "right-to-left-override"
+    ]
+  },
+  {
+    "case_id": "control_2060_001",
+    "title": "word joiner policy",
+    "input": "A⁠B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "AB",
+    "expected_findings": [
+      {
+        "code_point": "U+2060",
+        "count": 1,
+        "action": "remove"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "word-joiner"
+    ]
+  },
+  {
+    "case_id": "control_2061_001",
+    "title": "function application policy",
+    "input": "A⁡B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A⁡B",
+    "expected_findings": [
+      {
+        "code_point": "U+2061",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "function-application"
+    ]
+  },
+  {
+    "case_id": "control_2062_001",
+    "title": "invisible times policy",
+    "input": "A⁢B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A⁢B",
+    "expected_findings": [
+      {
+        "code_point": "U+2062",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "invisible-times"
+    ]
+  },
+  {
+    "case_id": "control_2063_001",
+    "title": "invisible separator policy",
+    "input": "A⁣B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A⁣B",
+    "expected_findings": [
+      {
+        "code_point": "U+2063",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "invisible-separator"
+    ]
+  },
+  {
+    "case_id": "control_feff_001",
+    "title": "interior byte-order mark policy",
+    "input": "A﻿B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "AB",
+    "expected_findings": [
+      {
+        "code_point": "U+FEFF",
+        "count": 1,
+        "action": "remove"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "control",
+      "unicode",
+      "interior-byte-order-mark"
+    ]
+  },
+  {
+    "case_id": "space_00a0_001",
+    "title": "non-breaking space normalisation",
+    "input": "A B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A B",
+    "expected_findings": [
+      {
+        "code_point": "U+00A0",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "whitespace",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "space_1680_001",
+    "title": "Ogham space mark normalisation",
+    "input": "A B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A B",
+    "expected_findings": [
+      {
+        "code_point": "U+1680",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "whitespace",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "space_2000_001",
+    "title": "en quad normalisation",
+    "input": "A B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A B",
+    "expected_findings": [
+      {
+        "code_point": "U+2000",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "whitespace",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "space_2001_001",
+    "title": "em quad normalisation",
+    "input": "A B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A B",
+    "expected_findings": [
+      {
+        "code_point": "U+2001",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "whitespace",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "space_2002_001",
+    "title": "en space normalisation",
+    "input": "A B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A B",
+    "expected_findings": [
+      {
+        "code_point": "U+2002",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "whitespace",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "space_2003_001",
+    "title": "em space normalisation",
+    "input": "A B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A B",
+    "expected_findings": [
+      {
+        "code_point": "U+2003",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "whitespace",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "space_2004_001",
+    "title": "three-per-em space normalisation",
+    "input": "A B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A B",
+    "expected_findings": [
+      {
+        "code_point": "U+2004",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "whitespace",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "space_2005_001",
+    "title": "four-per-em space normalisation",
+    "input": "A B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A B",
+    "expected_findings": [
+      {
+        "code_point": "U+2005",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "whitespace",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "space_2006_001",
+    "title": "six-per-em space normalisation",
+    "input": "A B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A B",
+    "expected_findings": [
+      {
+        "code_point": "U+2006",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "whitespace",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "space_2007_001",
+    "title": "figure space normalisation",
+    "input": "A B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A B",
+    "expected_findings": [
+      {
+        "code_point": "U+2007",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "whitespace",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "space_2008_001",
+    "title": "punctuation space normalisation",
+    "input": "A B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A B",
+    "expected_findings": [
+      {
+        "code_point": "U+2008",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "whitespace",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "space_2009_001",
+    "title": "thin space normalisation",
+    "input": "A B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A B",
+    "expected_findings": [
+      {
+        "code_point": "U+2009",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "whitespace",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "space_200a_001",
+    "title": "hair space normalisation",
+    "input": "A B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A B",
+    "expected_findings": [
+      {
+        "code_point": "U+200A",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "whitespace",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "space_202f_001",
+    "title": "narrow no-break space normalisation",
+    "input": "A B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A B",
+    "expected_findings": [
+      {
+        "code_point": "U+202F",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "whitespace",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "space_205f_001",
+    "title": "medium mathematical space normalisation",
+    "input": "A B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A B",
+    "expected_findings": [
+      {
+        "code_point": "U+205F",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "whitespace",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "punctuation_2010_001",
+    "title": "hyphen optional normalisation",
+    "input": "A‐B",
+    "options": [
+      "publishing_profile"
+    ],
+    "expected_output": "A-B",
+    "expected_findings": [
+      {
+        "code_point": "U+2010",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "punctuation",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "punctuation_2011_001",
+    "title": "non-breaking hyphen optional normalisation",
+    "input": "A‑B",
+    "options": [
+      "publishing_profile"
+    ],
+    "expected_output": "A-B",
+    "expected_findings": [
+      {
+        "code_point": "U+2011",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "punctuation",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "punctuation_2012_001",
+    "title": "figure dash optional normalisation",
+    "input": "A‒B",
+    "options": [
+      "publishing_profile"
+    ],
+    "expected_output": "A-B",
+    "expected_findings": [
+      {
+        "code_point": "U+2012",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "punctuation",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "punctuation_2013_001",
+    "title": "en dash optional normalisation",
+    "input": "A–B",
+    "options": [
+      "publishing_profile"
+    ],
+    "expected_output": "A-B",
+    "expected_findings": [
+      {
+        "code_point": "U+2013",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "punctuation",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "punctuation_2014_001",
+    "title": "em dash optional normalisation",
+    "input": "A—B",
+    "options": [
+      "publishing_profile"
+    ],
+    "expected_output": "A-B",
+    "expected_findings": [
+      {
+        "code_point": "U+2014",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "punctuation",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "punctuation_2015_001",
+    "title": "horizontal bar optional normalisation",
+    "input": "A―B",
+    "options": [
+      "publishing_profile"
+    ],
+    "expected_output": "A-B",
+    "expected_findings": [
+      {
+        "code_point": "U+2015",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "punctuation",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "punctuation_2018_001",
+    "title": "left single quote optional normalisation",
+    "input": "A‘B",
+    "options": [
+      "publishing_profile"
+    ],
+    "expected_output": "A'B",
+    "expected_findings": [
+      {
+        "code_point": "U+2018",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "punctuation",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "punctuation_2019_001",
+    "title": "right single quote optional normalisation",
+    "input": "A’B",
+    "options": [
+      "publishing_profile"
+    ],
+    "expected_output": "A'B",
+    "expected_findings": [
+      {
+        "code_point": "U+2019",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "punctuation",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "punctuation_201c_001",
+    "title": "left double quote optional normalisation",
+    "input": "A“B",
+    "options": [
+      "publishing_profile"
+    ],
+    "expected_output": "A\"B",
+    "expected_findings": [
+      {
+        "code_point": "U+201C",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "punctuation",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "punctuation_201d_001",
+    "title": "right double quote optional normalisation",
+    "input": "A”B",
+    "options": [
+      "publishing_profile"
+    ],
+    "expected_output": "A\"B",
+    "expected_findings": [
+      {
+        "code_point": "U+201D",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "punctuation",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "punctuation_2026_001",
+    "title": "ellipsis optional normalisation",
+    "input": "A…B",
+    "options": [
+      "publishing_profile"
+    ],
+    "expected_output": "A...B",
+    "expected_findings": [
+      {
+        "code_point": "U+2026",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "punctuation",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "punctuation_2032_001",
+    "title": "prime optional normalisation",
+    "input": "A′B",
+    "options": [
+      "publishing_profile"
+    ],
+    "expected_output": "A'B",
+    "expected_findings": [
+      {
+        "code_point": "U+2032",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "punctuation",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "punctuation_2033_001",
+    "title": "double prime optional normalisation",
+    "input": "A″B",
+    "options": [
+      "publishing_profile"
+    ],
+    "expected_output": "A\"B",
+    "expected_findings": [
+      {
+        "code_point": "U+2033",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "punctuation",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "punctuation_2212_001",
+    "title": "minus sign optional normalisation",
+    "input": "A−B",
+    "options": [
+      "publishing_profile"
+    ],
+    "expected_output": "A-B",
+    "expected_findings": [
+      {
+        "code_point": "U+2212",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "punctuation",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "punctuation_ff0d_001",
+    "title": "fullwidth hyphen-minus optional normalisation",
+    "input": "A－B",
+    "options": [
+      "publishing_profile"
+    ],
+    "expected_output": "A-B",
+    "expected_findings": [
+      {
+        "code_point": "U+FF0D",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "punctuation",
+      "normalization"
+    ]
+  },
+  {
+    "case_id": "nfkc_fb00_001",
+    "title": "NFKC compatibility normalisation",
+    "input": "XﬀY",
+    "options": [
+      "normalize_nfkc"
+    ],
+    "expected_output": "XffY",
+    "expected_findings": [
+      {
+        "code_point": "U+FB00",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "nfkc",
+      "compatibility"
+    ]
+  },
+  {
+    "case_id": "nfkc_fb01_001",
+    "title": "NFKC compatibility normalisation",
+    "input": "XﬁY",
+    "options": [
+      "normalize_nfkc"
+    ],
+    "expected_output": "XfiY",
+    "expected_findings": [
+      {
+        "code_point": "U+FB01",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "nfkc",
+      "compatibility"
+    ]
+  },
+  {
+    "case_id": "nfkc_fb02_001",
+    "title": "NFKC compatibility normalisation",
+    "input": "XﬂY",
+    "options": [
+      "normalize_nfkc"
+    ],
+    "expected_output": "XflY",
+    "expected_findings": [
+      {
+        "code_point": "U+FB02",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "nfkc",
+      "compatibility"
+    ]
+  },
+  {
+    "case_id": "nfkc_fb03_001",
+    "title": "NFKC compatibility normalisation",
+    "input": "XﬃY",
+    "options": [
+      "normalize_nfkc"
+    ],
+    "expected_output": "XffiY",
+    "expected_findings": [
+      {
+        "code_point": "U+FB03",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "nfkc",
+      "compatibility"
+    ]
+  },
+  {
+    "case_id": "nfkc_fb04_001",
+    "title": "NFKC compatibility normalisation",
+    "input": "XﬄY",
+    "options": [
+      "normalize_nfkc"
+    ],
+    "expected_output": "XfflY",
+    "expected_findings": [
+      {
+        "code_point": "U+FB04",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "nfkc",
+      "compatibility"
+    ]
+  },
+  {
+    "case_id": "nfkc_ff21_001",
+    "title": "NFKC compatibility normalisation",
+    "input": "XＡY",
+    "options": [
+      "normalize_nfkc"
+    ],
+    "expected_output": "XAY",
+    "expected_findings": [
+      {
+        "code_point": "U+FF21",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "nfkc",
+      "compatibility"
+    ]
+  },
+  {
+    "case_id": "nfkc_ff22_001",
+    "title": "NFKC compatibility normalisation",
+    "input": "XＢY",
+    "options": [
+      "normalize_nfkc"
+    ],
+    "expected_output": "XBY",
+    "expected_findings": [
+      {
+        "code_point": "U+FF22",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "nfkc",
+      "compatibility"
+    ]
+  },
+  {
+    "case_id": "nfkc_ff10_001",
+    "title": "NFKC compatibility normalisation",
+    "input": "X０Y",
+    "options": [
+      "normalize_nfkc"
+    ],
+    "expected_output": "X0Y",
+    "expected_findings": [
+      {
+        "code_point": "U+FF10",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "nfkc",
+      "compatibility"
+    ]
+  },
+  {
+    "case_id": "nfkc_2163_001",
+    "title": "NFKC compatibility normalisation",
+    "input": "XⅣY",
+    "options": [
+      "normalize_nfkc"
+    ],
+    "expected_output": "XIVY",
+    "expected_findings": [
+      {
+        "code_point": "U+2163",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "nfkc",
+      "compatibility"
+    ]
+  },
+  {
+    "case_id": "nfkc_2460_001",
+    "title": "NFKC compatibility normalisation",
+    "input": "X①Y",
+    "options": [
+      "normalize_nfkc"
+    ],
+    "expected_output": "X1Y",
+    "expected_findings": [
+      {
+        "code_point": "U+2460",
+        "count": 1,
+        "action": "replace"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "nfkc",
+      "compatibility"
+    ]
+  },
+  {
+    "case_id": "bidi_202a_002",
+    "title": "LRE inspection",
+    "input": "left‪right",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "left‪right",
+    "expected_findings": [
+      {
+        "code_point": "U+202A",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "bidi",
+      "security",
+      "preserve-by-default"
+    ]
+  },
+  {
+    "case_id": "bidi_202b_002",
+    "title": "RLE inspection",
+    "input": "left‫right",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "left‫right",
+    "expected_findings": [
+      {
+        "code_point": "U+202B",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "bidi",
+      "security",
+      "preserve-by-default"
+    ]
+  },
+  {
+    "case_id": "bidi_202c_002",
+    "title": "PDF inspection",
+    "input": "left‬right",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "left‬right",
+    "expected_findings": [
+      {
+        "code_point": "U+202C",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "bidi",
+      "security",
+      "preserve-by-default"
+    ]
+  },
+  {
+    "case_id": "bidi_202d_002",
+    "title": "LRO inspection",
+    "input": "left‭right",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "left‭right",
+    "expected_findings": [
+      {
+        "code_point": "U+202D",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "bidi",
+      "security",
+      "preserve-by-default"
+    ]
+  },
+  {
+    "case_id": "bidi_202e_002",
+    "title": "RLO inspection",
+    "input": "left‮right",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "left‮right",
+    "expected_findings": [
+      {
+        "code_point": "U+202E",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "bidi",
+      "security",
+      "preserve-by-default"
+    ]
+  },
+  {
+    "case_id": "bidi_2066_002",
+    "title": "LRI inspection",
+    "input": "left⁦right",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "left⁦right",
+    "expected_findings": [
+      {
+        "code_point": "U+2066",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "bidi",
+      "security",
+      "preserve-by-default"
+    ]
+  },
+  {
+    "case_id": "bidi_2067_002",
+    "title": "RLI inspection",
+    "input": "left⁧right",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "left⁧right",
+    "expected_findings": [
+      {
+        "code_point": "U+2067",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "bidi",
+      "security",
+      "preserve-by-default"
+    ]
+  },
+  {
+    "case_id": "bidi_2068_002",
+    "title": "FSI inspection",
+    "input": "left⁨right",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "left⁨right",
+    "expected_findings": [
+      {
+        "code_point": "U+2068",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "bidi",
+      "security",
+      "preserve-by-default"
+    ]
+  },
+  {
+    "case_id": "bidi_2069_002",
+    "title": "PDI inspection",
+    "input": "left⁩right",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "left⁩right",
+    "expected_findings": [
+      {
+        "code_point": "U+2069",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "bidi",
+      "security",
+      "preserve-by-default"
+    ]
+  },
+  {
+    "case_id": "bidi_061c_002",
+    "title": "ALM inspection",
+    "input": "left؜right",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "left؜right",
+    "expected_findings": [
+      {
+        "code_point": "U+061C",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "bidi",
+      "security",
+      "preserve-by-default"
+    ]
+  },
+  {
+    "case_id": "contextual_200c_001",
+    "title": "ZWNJ contextual preservation",
+    "input": "A‌B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A‌B",
+    "expected_findings": [
+      {
+        "code_point": "U+200C",
+        "count": 1,
+        "action": "preserve"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "contextual",
+      "variation-selector",
+      "joiner"
+    ]
+  },
+  {
+    "case_id": "contextual_200d_001",
+    "title": "ZWJ contextual preservation",
+    "input": "A‍B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A‍B",
+    "expected_findings": [
+      {
+        "code_point": "U+200D",
+        "count": 1,
+        "action": "preserve"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "contextual",
+      "variation-selector",
+      "joiner"
+    ]
+  },
+  {
+    "case_id": "contextual_fe00_001",
+    "title": "VS1 contextual preservation",
+    "input": "A︀B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A︀B",
+    "expected_findings": [
+      {
+        "code_point": "U+FE00",
+        "count": 1,
+        "action": "preserve"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "contextual",
+      "variation-selector",
+      "joiner"
+    ]
+  },
+  {
+    "case_id": "contextual_fe01_001",
+    "title": "VS2 contextual preservation",
+    "input": "A︁B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A︁B",
+    "expected_findings": [
+      {
+        "code_point": "U+FE01",
+        "count": 1,
+        "action": "preserve"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "contextual",
+      "variation-selector",
+      "joiner"
+    ]
+  },
+  {
+    "case_id": "contextual_fe02_001",
+    "title": "VS3 contextual preservation",
+    "input": "A︂B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A︂B",
+    "expected_findings": [
+      {
+        "code_point": "U+FE02",
+        "count": 1,
+        "action": "preserve"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "contextual",
+      "variation-selector",
+      "joiner"
+    ]
+  },
+  {
+    "case_id": "contextual_fe03_001",
+    "title": "VS4 contextual preservation",
+    "input": "A︃B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A︃B",
+    "expected_findings": [
+      {
+        "code_point": "U+FE03",
+        "count": 1,
+        "action": "preserve"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "contextual",
+      "variation-selector",
+      "joiner"
+    ]
+  },
+  {
+    "case_id": "contextual_fe0e_001",
+    "title": "VS15 contextual preservation",
+    "input": "A︎B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A︎B",
+    "expected_findings": [
+      {
+        "code_point": "U+FE0E",
+        "count": 1,
+        "action": "preserve"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "contextual",
+      "variation-selector",
+      "joiner"
+    ]
+  },
+  {
+    "case_id": "contextual_fe0f_001",
+    "title": "VS16 contextual preservation",
+    "input": "A️B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A️B",
+    "expected_findings": [
+      {
+        "code_point": "U+FE0F",
+        "count": 1,
+        "action": "preserve"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "contextual",
+      "variation-selector",
+      "joiner"
+    ]
+  },
+  {
+    "case_id": "contextual_e0100_001",
+    "title": "VS17 contextual preservation",
+    "input": "A󠄀B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A󠄀B",
+    "expected_findings": [
+      {
+        "code_point": "U+E0100",
+        "count": 1,
+        "action": "preserve"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "contextual",
+      "variation-selector",
+      "joiner"
+    ]
+  },
+  {
+    "case_id": "contextual_e01ef_001",
+    "title": "VS256 contextual preservation",
+    "input": "A󠇯B",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "A󠇯B",
+    "expected_findings": [
+      {
+        "code_point": "U+E01EF",
+        "count": 1,
+        "action": "preserve"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "contextual",
+      "variation-selector",
+      "joiner"
+    ]
+  },
+  {
+    "case_id": "confusable_0430_001",
+    "title": "а resembles Latin a",
+    "input": "pаypal",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "pаypal",
+    "expected_findings": [
+      {
+        "code_point": "U+0430",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "confusable",
+      "mixed-script",
+      "security"
+    ]
+  },
+  {
+    "case_id": "confusable_0435_001",
+    "title": "е resembles Latin e",
+    "input": "pеypal",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "pеypal",
+    "expected_findings": [
+      {
+        "code_point": "U+0435",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "confusable",
+      "mixed-script",
+      "security"
+    ]
+  },
+  {
+    "case_id": "confusable_043e_001",
+    "title": "о resembles Latin o",
+    "input": "pоypal",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "pоypal",
+    "expected_findings": [
+      {
+        "code_point": "U+043E",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "confusable",
+      "mixed-script",
+      "security"
+    ]
+  },
+  {
+    "case_id": "confusable_0440_001",
+    "title": "р resembles Latin p",
+    "input": "pрypal",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "pрypal",
+    "expected_findings": [
+      {
+        "code_point": "U+0440",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "confusable",
+      "mixed-script",
+      "security"
+    ]
+  },
+  {
+    "case_id": "confusable_0441_001",
+    "title": "с resembles Latin c",
+    "input": "pсypal",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "pсypal",
+    "expected_findings": [
+      {
+        "code_point": "U+0441",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "confusable",
+      "mixed-script",
+      "security"
+    ]
+  },
+  {
+    "case_id": "confusable_0445_001",
+    "title": "х resembles Latin x",
+    "input": "pхypal",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "pхypal",
+    "expected_findings": [
+      {
+        "code_point": "U+0445",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "confusable",
+      "mixed-script",
+      "security"
+    ]
+  },
+  {
+    "case_id": "confusable_0456_001",
+    "title": "і resembles Latin i",
+    "input": "pіypal",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "pіypal",
+    "expected_findings": [
+      {
+        "code_point": "U+0456",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "confusable",
+      "mixed-script",
+      "security"
+    ]
+  },
+  {
+    "case_id": "confusable_0391_001",
+    "title": "Α resembles Latin A",
+    "input": "pΑypal",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "pΑypal",
+    "expected_findings": [
+      {
+        "code_point": "U+0391",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "confusable",
+      "mixed-script",
+      "security"
+    ]
+  },
+  {
+    "case_id": "confusable_039f_001",
+    "title": "Ο resembles Latin O",
+    "input": "pΟypal",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "pΟypal",
+    "expected_findings": [
+      {
+        "code_point": "U+039F",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "confusable",
+      "mixed-script",
+      "security"
+    ]
+  },
+  {
+    "case_id": "confusable_03a1_001",
+    "title": "Ρ resembles Latin P",
+    "input": "pΡypal",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "pΡypal",
+    "expected_findings": [
+      {
+        "code_point": "U+03A1",
+        "count": 1,
+        "action": "flag"
+      }
+    ],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "confusable",
+      "mixed-script",
+      "security"
+    ]
+  },
+  {
+    "case_id": "structure_markdown_heading_001",
+    "title": "Structural preservation",
+    "input": "# Heading",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "# Heading",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "markdown",
+      "heading"
+    ]
+  },
+  {
+    "case_id": "structure_markdown_bold_001",
+    "title": "Structural preservation",
+    "input": "Text with **bold**.",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "Text with **bold**.",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "markdown",
+      "emphasis"
+    ]
+  },
+  {
+    "case_id": "structure_markdown_inline_code_001",
+    "title": "Structural preservation",
+    "input": "Use `a—b` in code.",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "Use `a—b` in code.",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "markdown",
+      "code",
+      "protected-region"
+    ]
+  },
+  {
+    "case_id": "structure_markdown_fenced_code_001",
+    "title": "Structural preservation",
+    "input": "```python\nvalue = 'a—b'\n```",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "```python\nvalue = 'a—b'\n```",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "markdown",
+      "code-fence",
+      "protected-region"
+    ]
+  },
+  {
+    "case_id": "structure_url_preserve_001",
+    "title": "Structural preservation",
+    "input": "Visit https://example.com/a—b.",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "Visit https://example.com/a—b.",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "url",
+      "protected-region"
+    ]
+  },
+  {
+    "case_id": "structure_email_preserve_001",
+    "title": "Structural preservation",
+    "input": "Write to a—b@example.com.",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "Write to a—b@example.com.",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "email",
+      "protected-region"
+    ]
+  },
+  {
+    "case_id": "structure_citation_preserve_001",
+    "title": "Structural preservation",
+    "input": "Evidence [@smith—2025].",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "Evidence [@smith—2025].",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "citation",
+      "protected-region"
+    ]
+  },
+  {
+    "case_id": "structure_yaml_preserve_001",
+    "title": "Structural preservation",
+    "input": "---\ntitle: A—B\n---",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "---\ntitle: A—B\n---",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "yaml",
+      "protected-region"
+    ]
+  },
+  {
+    "case_id": "structure_table_preserve_001",
+    "title": "Structural preservation",
+    "input": "| A | B |\n|---|---|\n| 1 | 2 |",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "| A | B |\n|---|---|\n| 1 | 2 |",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "markdown",
+      "table"
+    ]
+  },
+  {
+    "case_id": "structure_paragraph_preserve_001",
+    "title": "Structural preservation",
+    "input": "First paragraph.\n\nSecond paragraph.",
+    "options": [
+      "safe_profile"
+    ],
+    "expected_output": "First paragraph.\n\nSecond paragraph.",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "structure",
+      "paragraph"
+    ]
+  },
+  {
+    "case_id": "encoding_utf8_check_001",
+    "title": "Conservative encoding repair",
+    "input": "âœ” No problems",
+    "options": [
+      "repair_encoding"
+    ],
+    "expected_output": "✔ No problems",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "encoding",
+      "mojibake",
+      "ftfy-style"
+    ]
+  },
+  {
+    "case_id": "encoding_curly_utf8_001",
+    "title": "Conservative encoding repair",
+    "input": "l’humanitÃ©",
+    "options": [
+      "repair_encoding"
+    ],
+    "expected_output": "l'humanité",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "encoding",
+      "mojibake",
+      "ftfy-style"
+    ]
+  },
+  {
+    "case_id": "encoding_double_mojibake_001",
+    "title": "Conservative encoding repair",
+    "input": "The Mona Lisa doesnÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢t.",
+    "options": [
+      "repair_encoding"
+    ],
+    "expected_output": "The Mona Lisa doesn't.",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "encoding",
+      "mojibake",
+      "ftfy-style"
+    ]
+  },
+  {
+    "case_id": "encoding_latin1_name_001",
+    "title": "Conservative encoding repair",
+    "input": "FranÃ§ois",
+    "options": [
+      "repair_encoding"
+    ],
+    "expected_output": "François",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "encoding",
+      "mojibake",
+      "ftfy-style"
+    ]
+  },
+  {
+    "case_id": "encoding_spanish_name_001",
+    "title": "Conservative encoding repair",
+    "input": "PÃ©rez",
+    "options": [
+      "repair_encoding"
+    ],
+    "expected_output": "Pérez",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "encoding",
+      "mojibake",
+      "ftfy-style"
+    ]
+  },
+  {
+    "case_id": "encoding_german_word_001",
+    "title": "Conservative encoding repair",
+    "input": "GrÃ¼ÃŸe",
+    "options": [
+      "repair_encoding"
+    ],
+    "expected_output": "Grüße",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "encoding",
+      "mojibake",
+      "ftfy-style"
+    ]
+  },
+  {
+    "case_id": "encoding_currency_001",
+    "title": "Conservative encoding repair",
+    "input": "Price: â‚¬10",
+    "options": [
+      "repair_encoding"
+    ],
+    "expected_output": "Price: €10",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "encoding",
+      "mojibake",
+      "ftfy-style"
+    ]
+  },
+  {
+    "case_id": "encoding_emdash_mojibake_001",
+    "title": "Conservative encoding repair",
+    "input": "Aâ€”B",
+    "options": [
+      "repair_encoding"
+    ],
+    "expected_output": "A—B",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "encoding",
+      "mojibake",
+      "ftfy-style"
+    ]
+  },
+  {
+    "case_id": "encoding_quote_mojibake_001",
+    "title": "Conservative encoding repair",
+    "input": "â€œHelloâ€",
+    "options": [
+      "repair_encoding"
+    ],
+    "expected_output": "“Hello”",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "encoding",
+      "mojibake",
+      "ftfy-style"
+    ]
+  },
+  {
+    "case_id": "encoding_nbsp_mojibake_001",
+    "title": "Conservative encoding repair",
+    "input": "AÂ B",
+    "options": [
+      "repair_encoding"
+    ],
+    "expected_output": "A B",
+    "expected_findings": [],
+    "source": {
+      "kind": "project_policy",
+      "reference": "Text Integrity Studio specification 1.0",
+      "observed_at": "2026-09-04"
+    },
+    "confidence": "proposed",
+    "tags": [
+      "encoding",
+      "mojibake",
+      "ftfy-style"
+    ]
+  }
+]
