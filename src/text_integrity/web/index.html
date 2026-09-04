@@ -29,6 +29,7 @@
       <button id="inspect" class="secondary">Inspect</button>
       <button id="clean">Clean text</button>
       <button id="review-integrity" class="secondary">Review integrity</button>
+      <button id="inspect-payloads" class="secondary">Inspect hidden data</button>
       <button id="copy" class="secondary">Copy output</button>
       <button id="download-text" class="secondary">Download text</button>
       <button id="download" class="secondary">Download audit</button>
@@ -99,6 +100,26 @@
           <tbody></tbody>
         </table>
       </div>
+    </section>
+
+    <section class="card payload-card">
+      <div class="panel-title"><h2>Advanced hidden-data inspection</h2><span id="payload-count">Not inspected</span></div>
+      <p class="disclaimer">Possible encoded payloads are not confirmed AI watermarks or proof of authorship.</p>
+      <div class="table-wrap">
+        <table id="payloads" hidden>
+          <thead><tr><th>Codec</th><th>Range</th><th>Characters</th><th>Decoded text</th><th>Confidence</th><th>Explanation</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <details class="inventory-details">
+        <summary>Raw code-point inventory</summary>
+        <div class="table-wrap">
+          <table id="inventory">
+            <thead><tr><th>Offset</th><th>Visible form</th><th>Code point</th><th>Unicode name</th><th>Category</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </details>
     </section>
     <p id="status" role="status"></p>
   </main>
