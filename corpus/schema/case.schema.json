@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://text-integrity-studio.dev/schema/case.schema.json",
+  "title": "Behavioural corpus case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_id", "title", "input", "options", "expected_output",
+    "expected_findings", "source", "confidence", "tags"
+  ],
+  "properties": {
+    "case_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_]*$"},
+    "title": {"type": "string", "minLength": 1},
+    "input": {"type": "string"},
+    "options": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "expected_output": {"type": "string"},
+    "expected_findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code_point", "count", "action"],
+        "properties": {
+          "code_point": {"type": "string", "pattern": "^U\\+[0-9A-F]{4,6}$"},
+          "count": {"type": "integer", "minimum": 1},
+          "action": {"enum": ["remove", "replace", "preserve", "flag"]}
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "reference", "observed_at"],
+      "properties": {
+        "kind": {"enum": ["black_box", "documentation", "standard", "project_policy"]},
+        "reference": {"type": "string", "minLength": 1},
+        "observed_at": {"type": "string", "format": "date"}
+      }
+    },
+    "confidence": {"enum": ["verified", "documented", "inferred", "proposed"]},
+    "tags": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "notes": {"type": "string"}
+  }
+}
