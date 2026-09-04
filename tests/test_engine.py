@@ -7,6 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from text_integrity import clean, inspect
+from text_integrity.studio import process_api
 
 
 def all_cases():
@@ -45,6 +46,15 @@ class EngineTests(unittest.TestCase):
     def test_unknown_profile_is_rejected(self):
         with self.assertRaisesRegex(ValueError, "Unknown profile"):
             clean("text", profile="aggressive")
+
+    def test_studio_api_uses_core_engine(self):
+        result = process_api("/api/clean", {"text": "A\u200b—B", "profile": "publishing"})
+        self.assertEqual(result["output"], "A-B")
+        self.assertEqual(len(result["findings"]), 2)
+
+    def test_studio_api_rejects_invalid_payload(self):
+        with self.assertRaisesRegex(ValueError, "text"):
+            process_api("/api/inspect", {"text": 42})
 
 
 if __name__ == "__main__":
