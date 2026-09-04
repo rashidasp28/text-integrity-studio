@@ -2,7 +2,7 @@
 
 ## Complete behavioural and developer specification
 
-**Status:** Phases 0 to 2 implemented; Phase 3 local visual preview implemented  
+**Status:** Phases 0 to 3 implemented; Phase 4 deterministic rewrite foundation implemented  
 **Specification version:** 1.1  
 **Date:** 4 September 2026
 
@@ -819,4 +819,4 @@ Publish signed Windows, macOS and Linux installers plus a Python CLI. Updates an
 
 ## Approval gate
 
-Phases 0 to 2 and the Phase 3 local visual preview have been implemented and tested. The next production work should complete the desktop application and its packaging before beginning the optional rewrite or Pre-submission Integrity Review modules. Any integrity-review implementation must follow Section 5.5 and must not introduce detector-evasion behaviour.
+Phases 0 to 3 and the Phase 4 deterministic rewrite foundation have been implemented and tested. Phase 4 currently provides conservative style suggestions, individual acceptance controls, protected-fact validation and revision audit export through a local backend interface. Further Phase 4 work may add an explicitly configured local model only after entity-validation coverage is expanded. Any integrity-review implementation must follow Section 5.5 and must not introduce detector-evasion behaviour.
