@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Text Integrity Studio</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div>
+      <p class="eyebrow">LOCAL-FIRST UNICODE WORKBENCH</p>
+      <h1>Text Integrity Studio</h1>
+      <p>Inspect unusual characters, clean text safely, and review every change.</p>
+    </div>
+    <span class="privacy">● Processing locally</span>
+  </header>
+
+  <main>
+    <section class="controls card">
+      <label for="profile">Cleaning profile</label>
+      <select id="profile">
+        <option value="safe">Safe</option>
+        <option value="publishing">Publishing</option>
+      </select>
+      <button id="inspect" class="secondary">Inspect</button>
+      <button id="clean">Clean text</button>
+      <button id="copy" class="secondary">Copy output</button>
+      <button id="download" class="secondary">Download audit</button>
+    </section>
+
+    <section class="editors">
+      <article class="card editor-card">
+        <div class="panel-title"><h2>Original</h2><span id="characters">0 characters</span></div>
+        <textarea id="source" spellcheck="false" placeholder="Paste or type text here…"></textarea>
+      </article>
+      <article class="card editor-card">
+        <div class="panel-title"><h2>Cleaned preview</h2><span id="change-count">0 changes</span></div>
+        <textarea id="output" readonly placeholder="Cleaned text will appear here"></textarea>
+      </article>
+    </section>
+
+    <section class="card findings-card">
+      <div class="panel-title"><h2>Character findings</h2><span id="finding-count">0 findings</span></div>
+      <p id="empty">No inspection has been run.</p>
+      <div class="table-wrap">
+        <table id="findings" hidden>
+          <thead><tr><th>Character</th><th>Code point</th><th>Name</th><th>Category</th><th>Action</th><th>Offset</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+    <p id="status" role="status"></p>
+  </main>
+
+  <footer>Unusual Unicode is not evidence of AI authorship.</footer>
+  <script src="/app.js"></script>
+</body>
+</html>
