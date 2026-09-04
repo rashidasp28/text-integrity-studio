@@ -4,8 +4,9 @@ Local-first Unicode inspection, safe text cleaning and optional meaning-preservi
 
 ## Project status
 
-Phase 1 is active: the behavioural evidence now drives a functional Python
-inspection and deterministic cleaning engine.
+Phases 1 to 3 and the first Phase 4 deterministic rewrite build are active.
+The behavioural evidence drives the Python inspection and cleaning engine,
+local visual application and protected-fact rewrite workflow.
 
 The initial corpus contains 115 cases spanning character controls, whitespace,
 punctuation, compatibility normalisation, bidirectional text, contextual
@@ -98,6 +99,27 @@ visible labels. It groups Unicode tag characters, zero-width binary sequences
 and variation-selector sequences, then attempts decoding only when a recognised
 codec produces printable UTF-8. Results are possible payloads, not confirmed AI
 watermarks or evidence of authorship.
+
+## Meaning-preserving rewrite
+
+Version 0.5 begins Phase 4 with a deterministic style backend. It identifies a
+conservative set of wordy phrases and presents each revision for individual
+acceptance. Measurements, dates, citations, numbers, URLs, email addresses and
+identifiers are inventoried as protected facts, and accepted revisions are
+rejected if that fact signature changes. The JSON audit records accepted and
+rejected suggestion IDs and the protected spans used for validation.
+
+Analyse a file from the command line:
+
+```bash
+text-integrity rewrite input.txt
+```
+
+Apply selected suggestions after reviewing their IDs:
+
+```bash
+text-integrity rewrite input.txt --accept S0001 --output revised.txt --report rewrite-audit.json
+```
 
 ## Confidence levels
 
