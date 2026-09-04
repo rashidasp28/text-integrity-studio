@@ -6,6 +6,7 @@ import json
 import mimetypes
 import threading
 import webbrowser
+from difflib import SequenceMatcher
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from importlib.resources import files
@@ -19,6 +20,20 @@ MAX_REQUEST_BYTES = 2 * 1024 * 1024
 WEB_ROOT = files("text_integrity").joinpath("web")
 
 
+def build_diff(original: str, output: str) -> list[dict[str, str]]:
+    """Return safe, character-level diff segments for presentation."""
+    segments: list[dict[str, str]] = []
+    for operation, old_start, old_end, new_start, new_end in SequenceMatcher(
+        None, original, output, autojunk=False
+    ).get_opcodes():
+        segments.append({
+            "operation": operation,
+            "original": original[old_start:old_end],
+            "output": output[new_start:new_end],
+        })
+    return segments
+
+
 def process_api(path: str, payload: dict[str, Any]) -> Any:
     text = payload.get("text")
     if not isinstance(text, str):
@@ -28,9 +43,13 @@ def process_api(path: str, payload: dict[str, Any]) -> Any:
     if path == "/api/clean":
         profile = payload.get("profile", "safe")
         options = payload.get("options", [])
-        if not isinstance(profile, str) or not isinstance(options, list):
+        if profile is not None and not isinstance(profile, str):
+            raise ValueError("Invalid profile.")
+        if not isinstance(options, list) or not all(isinstance(option, str) for option in options):
             raise ValueError("Invalid profile or options.")
-        return clean(text, profile=profile, options=options).as_dict()
+        result = clean(text, profile=profile, options=options).as_dict()
+        result["diff"] = build_diff(text, result["output"])
+        return result
     raise ValueError("Unknown API endpoint.")
 
 
