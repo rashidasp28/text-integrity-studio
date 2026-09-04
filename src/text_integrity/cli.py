@@ -27,12 +27,21 @@ def build_parser() -> argparse.ArgumentParser:
     clean_parser.add_argument("--rule", action="append", default=[], help="Enable an additional rule")
     clean_parser.add_argument("--output", help="Write cleaned UTF-8 text to this file")
     clean_parser.add_argument("--report", help="Write a JSON audit report to this file")
+    studio_parser = subparsers.add_parser("studio", help="Open the local visual interface")
+    studio_parser.add_argument("--host", default="127.0.0.1")
+    studio_parser.add_argument("--port", default=8765, type=int)
+    studio_parser.add_argument("--no-browser", action="store_true")
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
+        if args.command == "studio":
+            from .studio import run_studio
+
+            run_studio(args.host, args.port, open_browser=not args.no_browser)
+            return 0
         source = _read(args.input)
         if args.command == "inspect":
             print(json.dumps([finding.as_dict() for finding in inspect(source)], ensure_ascii=False, indent=2))
