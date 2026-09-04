@@ -74,6 +74,12 @@ The visual interface supports TXT and Markdown import, Safe, Publishing and
 Custom rule selection, highlighted differences, applied-rule explanations,
 copying and downloading cleaned text, JSON audit export, undo and reset.
 
+Version 0.2 adds a local Pre-submission Integrity Review. It inventories
+author-year citations and citation keys, reconciles them with a References or
+Bibliography section, and flags long quotations without nearby recognised
+citations. Its results are local diagnostics, not plagiarism findings, AI
+classifications or predictions of a Turnitin score.
+
 ## Confidence levels
 
 - `verified`: directly reproduced against a reference tool
