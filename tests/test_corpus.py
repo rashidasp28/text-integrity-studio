@@ -11,6 +11,9 @@ def all_cases():
 
 
 class CorpusTests(unittest.TestCase):
+    def test_phase_zero_has_at_least_one_hundred_cases(self):
+        self.assertGreaterEqual(len(list(all_cases())), 100)
+
     def test_case_ids_are_unique(self):
         ids = [case["case_id"] for case in all_cases()]
         self.assertEqual(len(ids), len(set(ids)))
