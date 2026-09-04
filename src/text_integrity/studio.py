@@ -17,6 +17,7 @@ from urllib.parse import urlparse
 from .engine import clean, inspect
 from .integrity import review_integrity
 from .payloads import inspect_payloads
+from .rewrite import analyse_rewrite, apply_rewrite
 
 MAX_REQUEST_BYTES = 2 * 1024 * 1024
 WEB_ROOT = files("text_integrity").joinpath("web")
@@ -56,6 +57,16 @@ def process_api(path: str, payload: dict[str, Any]) -> Any:
         return review_integrity(text)
     if path == "/api/payloads":
         return inspect_payloads(text)
+    if path == "/api/rewrite/analyse":
+        return analyse_rewrite(text, backend=payload.get("backend", "deterministic"))
+    if path == "/api/rewrite/apply":
+        result = apply_rewrite(
+            text,
+            payload.get("accepted_ids", []),
+            backend=payload.get("backend", "deterministic"),
+        )
+        result["diff"] = build_diff(text, result["output"])
+        return result
     raise ValueError("Unknown API endpoint.")
 
 
