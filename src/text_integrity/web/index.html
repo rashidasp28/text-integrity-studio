@@ -110,13 +110,24 @@
     <section class="card integrity-card">
       <div class="panel-title"><h2>Pre-submission integrity review</h2><span id="integrity-count">Not reviewed</span></div>
       <p class="disclaimer">Local citation and attribution diagnostics only. This is not a plagiarism verdict or a Turnitin score prediction.</p>
+      <div class="integrity-controls">
+        <label class="file-button" for="corpus-input">Add authorised comparison files</label>
+        <input id="corpus-input" type="file" accept=".txt,.md,text/plain,text/markdown" multiple hidden>
+        <span id="corpus-count">No comparison files</span>
+        <label><input class="integrity-exclusion" type="checkbox" value="bibliography"> Exclude bibliography warnings</label>
+        <label><input class="integrity-exclusion" type="checkbox" value="quotation"> Exclude quotation warnings</label>
+      </div>
       <div id="metrics" class="metrics"></div>
+      <p id="integrity-limitations" class="limitations"></p>
       <div class="table-wrap">
         <table id="integrity-findings" hidden>
-          <thead><tr><th>Category</th><th>Severity</th><th>Finding</th><th>Evidence</th><th>Offset</th></tr></thead>
+          <thead><tr><th>Category</th><th>Severity</th><th>Finding</th><th>Evidence</th><th>Source</th><th>Decision</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
+      <label class="transparency-label" for="transparency-statement">Optional authorship transparency statement</label>
+      <textarea id="transparency-statement" class="compact-textarea" placeholder="Describe permitted AI assistance and the author's verification steps."></textarea>
+      <div class="integrity-actions"><button id="download-integrity" class="secondary" disabled>Download integrity audit</button></div>
     </section>
 
     <section class="card payload-card">
