@@ -18,7 +18,17 @@ def all_cases():
 
 class EngineTests(unittest.TestCase):
     def test_release_version(self):
-        self.assertEqual(__version__, "0.6.0")
+        self.assertEqual(__version__, "0.6.1")
+
+    def test_rewrite_analysis_returns_every_protected_value(self):
+        text = "Samples 12 and 13 were tested at 7.3 mW on 9 September 2026 (Smith, 2024)."
+        report = analyse_rewrite(text)
+        values = [span["text"] for span in report["protected_spans"]]
+        self.assertIn("12", values)
+        self.assertIn("13", values)
+        self.assertIn("7.3 mW", values)
+        self.assertIn("9 September 2026", values)
+        self.assertIn("(Smith, 2024)", values)
 
     def test_every_corpus_case_has_exact_output(self):
         for case in all_cases():
