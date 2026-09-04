@@ -3,6 +3,7 @@
 from .engine import clean, inspect
 from .integrity import review_integrity
 from .payloads import code_point_inventory, inspect_payloads
+from .rewrite import analyse_rewrite, apply_rewrite, protected_spans
 from .models import Action, AppliedEdit, Finding, ProcessingResult
 
 __all__ = [
@@ -15,6 +16,9 @@ __all__ = [
     "review_integrity",
     "code_point_inventory",
     "inspect_payloads",
+    "analyse_rewrite",
+    "apply_rewrite",
+    "protected_spans",
 ]
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"
