@@ -80,6 +80,17 @@ Bibliography section, and flags long quotations without nearby recognised
 citations. Its results are local diagnostics, not plagiarism findings, AI
 classifications or predictions of a Turnitin score.
 
+## Standalone alpha builds
+
+Version 0.3 adds automated standalone builds for Windows, macOS and Linux.
+Successful GitHub Actions runs publish one-file application artifacts with a
+SHA-256 checksum. Open the downloaded application and keep its terminal window
+open while using the local browser interface. Press `Ctrl+C` to stop it.
+
+Alpha binaries are not yet code-signed. Operating systems may display an
+unknown-publisher warning. Verify the checksum before running a downloaded
+artifact. Signed installers remain a later release milestone.
+
 ## Confidence levels
 
 - `verified`: directly reproduced against a reference tool
