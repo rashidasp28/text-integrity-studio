@@ -9,6 +9,7 @@ let lastIntegrityResult = null;
 let lastPayloadResult = null;
 let lastRewriteAnalysis = null;
 let lastRewriteResult = null;
+let comparisonSources = [];
 const profileRules = {
   safe: ['remove_hidden', 'convert_nbsp', 'normalize_unusual_spaces', 'remove_trailing_whitespace'],
   publishing: ['remove_hidden', 'convert_nbsp', 'normalize_unusual_spaces', 'remove_trailing_whitespace', 'normalize_dashes', 'normalize_quotes', 'convert_ellipsis']
@@ -16,6 +17,11 @@ const profileRules = {
 
 source.addEventListener('input', () => {
   document.querySelector('#characters').textContent = `${source.value.length} characters`;
+  if (lastIntegrityResult) {
+    lastIntegrityResult = null;
+    document.querySelector('#integrity-count').textContent = 'Review expired';
+    document.querySelector('#download-integrity').disabled = true;
+  }
   if (lastRewriteAnalysis) {
     lastRewriteAnalysis = null;
     lastRewriteResult = null;
@@ -37,6 +43,8 @@ async function request(path) {
       text: source.value,
       profile: document.querySelector('#profile').value === 'custom' ? null : document.querySelector('#profile').value,
       options: [...document.querySelectorAll('#rules input:checked')].map(input => input.value)
+      ,comparison_sources: comparisonSources
+      ,exclusions: [...document.querySelectorAll('.integrity-exclusion:checked')].map(input => input.value)
     })
   });
   const result = await response.json();
@@ -116,6 +124,21 @@ document.querySelector('#file-input').addEventListener('change', async event => 
   source.value = await file.text();
   source.dispatchEvent(new Event('input'));
   status.textContent = `Opened ${file.name}.`;
+});
+
+document.querySelector('#corpus-input').addEventListener('change', async event => {
+  const files = [...event.target.files];
+  const total = files.reduce((sum, file) => sum + file.size, 0);
+  if (files.length > 20 || total > 2 * 1024 * 1024) {
+    status.textContent = 'The authorised corpus is limited to 20 files and 2 MB.';
+    event.target.value = '';
+    return;
+  }
+  comparisonSources = await Promise.all(files.map(async file => ({name: file.name, text: await file.text()})));
+  document.querySelector('#corpus-count').textContent = comparisonSources.length
+    ? `${comparisonSources.length} authorised file${comparisonSources.length === 1 ? '' : 's'}`
+    : 'No comparison files';
+  status.textContent = comparisonSources.length ? 'Authorised comparison files loaded locally.' : '';
 });
 
 function showFindings(findings) {
@@ -221,6 +244,10 @@ document.querySelector('#review-integrity').addEventListener('click', async () =
       citations_detected: 'Citations detected',
       references_detected: 'References detected',
       matched_references: 'Matched references',
+      authorised_sources: 'Authorised sources',
+      matched_passages: 'Matched passages',
+      matched_text_coverage_percent: 'Local match coverage %',
+      excluded_findings: 'Excluded findings',
       unresolved_findings: 'Unresolved findings'
     };
     for (const [key, value] of Object.entries(lastIntegrityResult.metrics)) {
@@ -238,18 +265,53 @@ document.querySelector('#review-integrity').addEventListener('click', async () =
     integrityBody.replaceChildren();
     for (const finding of lastIntegrityResult.findings) {
       const row = document.createElement('tr');
-      for (const value of [finding.category, finding.severity, finding.message, finding.evidence, finding.offset]) {
+      for (const value of [finding.category, finding.severity, finding.message, finding.evidence, finding.source]) {
         const cell = document.createElement('td');
         cell.textContent = value;
         row.appendChild(cell);
       }
+      const decisionCell = document.createElement('td');
+      const decision = document.createElement('select');
+      decision.dataset.findingId = finding.finding_id;
+      for (const value of ['unresolved', 'reviewed', 'dismissed']) {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = value[0].toUpperCase() + value.slice(1);
+        decision.appendChild(option);
+      }
+      decisionCell.appendChild(decision);
+      row.appendChild(decisionCell);
       integrityBody.appendChild(row);
     }
     integrityTable.hidden = lastIntegrityResult.findings.length === 0;
     document.querySelector('#integrity-count').textContent = `${lastIntegrityResult.findings.length} findings`;
+    document.querySelector('#integrity-limitations').textContent = lastIntegrityResult.limitations.join(' ');
+    document.querySelector('#download-integrity').disabled = false;
     status.textContent = lastIntegrityResult.findings.length
       ? 'Review the evidence before revising your document.'
       : 'No citation or attribution issues were identified by the local checks.';
+  } catch (error) { status.textContent = error.message; }
+});
+
+document.querySelector('#download-integrity').addEventListener('click', async () => {
+  if (!lastIntegrityResult) { status.textContent = 'Run the integrity review before downloading an audit.'; return; }
+  const decisions = {};
+  for (const select of document.querySelectorAll('#integrity-findings select')) decisions[select.dataset.findingId] = select.value;
+  try {
+    const response = await fetch('/api/integrity/audit', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        text: source.value,
+        report: lastIntegrityResult,
+        decisions,
+        transparency_statement: document.querySelector('#transparency-statement').value
+      })
+    });
+    const audit = await response.json();
+    if (!response.ok) throw new Error(audit.error || 'Integrity audit failed.');
+    download(JSON.stringify(audit, null, 2), 'text-integrity-review-audit.json', 'application/json');
+    status.textContent = 'Integrity review audit downloaded.';
   } catch (error) { status.textContent = error.message; }
 });
 
@@ -309,6 +371,7 @@ document.querySelector('#undo').addEventListener('click', () => {
   lastPayloadResult = null;
   lastRewriteAnalysis = null;
   lastRewriteResult = null;
+  comparisonSources = [];
   renderDiff([{operation: 'equal', original: source.value, output: source.value}]);
   showChanges([]);
   document.querySelector('#change-count').textContent = '0 changes';
@@ -328,6 +391,11 @@ document.querySelector('#reset').addEventListener('click', () => {
   document.querySelector('#metrics').replaceChildren();
   document.querySelector('#integrity-findings').hidden = true;
   document.querySelector('#integrity-count').textContent = 'Not reviewed';
+  document.querySelector('#integrity-limitations').textContent = '';
+  document.querySelector('#download-integrity').disabled = true;
+  document.querySelector('#transparency-statement').value = '';
+  document.querySelector('#corpus-input').value = '';
+  document.querySelector('#corpus-count').textContent = 'No comparison files';
   document.querySelector('#payloads').hidden = true;
   document.querySelector('#payloads tbody').replaceChildren();
   document.querySelector('#inventory tbody').replaceChildren();
