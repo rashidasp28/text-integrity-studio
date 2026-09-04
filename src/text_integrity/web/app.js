@@ -5,6 +5,10 @@ const table = document.querySelector('#findings');
 const body = table.querySelector('tbody');
 const empty = document.querySelector('#empty');
 let lastResult = null;
+const profileRules = {
+  safe: ['remove_hidden', 'convert_nbsp', 'normalize_unusual_spaces', 'remove_trailing_whitespace'],
+  publishing: ['remove_hidden', 'convert_nbsp', 'normalize_unusual_spaces', 'remove_trailing_whitespace', 'normalize_dashes', 'normalize_quotes', 'convert_ellipsis']
+};
 
 source.addEventListener('input', () => {
   document.querySelector('#characters').textContent = `${source.value.length} characters`;
@@ -15,12 +19,78 @@ async function request(path) {
   const response = await fetch(path, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({text: source.value, profile: document.querySelector('#profile').value})
+    body: JSON.stringify({
+      text: source.value,
+      profile: document.querySelector('#profile').value === 'custom' ? null : document.querySelector('#profile').value,
+      options: [...document.querySelectorAll('#rules input:checked')].map(input => input.value)
+    })
   });
   const result = await response.json();
   if (!response.ok) throw new Error(result.error || 'Processing failed.');
   return result;
 }
+
+function renderDiff(segments) {
+  const original = document.querySelector('#diff-original');
+  const cleaned = document.querySelector('#diff-output');
+  original.replaceChildren();
+  cleaned.replaceChildren();
+  for (const segment of segments) {
+    const oldNode = document.createElement(segment.operation === 'delete' || segment.operation === 'replace' ? 'mark' : 'span');
+    oldNode.className = segment.operation === 'delete' || segment.operation === 'replace' ? 'delete' : '';
+    oldNode.textContent = segment.original;
+    original.appendChild(oldNode);
+    const newNode = document.createElement(segment.operation === 'insert' || segment.operation === 'replace' ? 'mark' : 'span');
+    newNode.className = segment.operation === 'insert' || segment.operation === 'replace' ? 'insert' : '';
+    newNode.textContent = segment.output;
+    cleaned.appendChild(newNode);
+  }
+}
+
+function showChanges(edits) {
+  const list = document.querySelector('#changes');
+  list.replaceChildren();
+  if (!edits.length) {
+    const item = document.createElement('li');
+    item.textContent = 'No changes were needed.';
+    list.appendChild(item);
+  }
+  for (const edit of edits) {
+    const item = document.createElement('li');
+    item.textContent = `${edit.rule_id}: ${edit.explanation}`;
+    list.appendChild(item);
+  }
+  document.querySelector('#applied-count').textContent = `${edits.length} applied rules`;
+}
+
+function download(content, filename, type) {
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(new Blob([content], {type}));
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
+
+function syncRules() {
+  const profile = document.querySelector('#profile').value;
+  const enabled = profileRules[profile] || [];
+  for (const input of document.querySelectorAll('#rules input')) {
+    if (profile !== 'custom') input.checked = enabled.includes(input.value);
+    input.disabled = profile !== 'custom';
+  }
+}
+
+document.querySelector('#profile').addEventListener('change', syncRules);
+syncRules();
+
+document.querySelector('#file-input').addEventListener('change', async event => {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) { status.textContent = 'File exceeds the 2 MB limit.'; return; }
+  source.value = await file.text();
+  source.dispatchEvent(new Event('input'));
+  status.textContent = `Opened ${file.name}.`;
+});
 
 function showFindings(findings) {
   body.replaceChildren();
@@ -49,6 +119,8 @@ document.querySelector('#clean').addEventListener('click', async () => {
     lastResult = await request('/api/clean');
     output.value = lastResult.output;
     showFindings(lastResult.findings);
+    renderDiff(lastResult.diff);
+    showChanges(lastResult.edits);
     document.querySelector('#change-count').textContent = `${lastResult.edits.length} rule changes`;
   } catch (error) { status.textContent = error.message; }
 });
@@ -60,9 +132,31 @@ document.querySelector('#copy').addEventListener('click', async () => {
 
 document.querySelector('#download').addEventListener('click', () => {
   if (!lastResult) { status.textContent = 'Clean the text before downloading an audit.'; return; }
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(new Blob([JSON.stringify(lastResult, null, 2)], {type: 'application/json'}));
-  link.download = 'text-integrity-audit.json';
-  link.click();
-  URL.revokeObjectURL(link.href);
+  download(JSON.stringify(lastResult, null, 2), 'text-integrity-audit.json', 'application/json');
+});
+
+document.querySelector('#download-text').addEventListener('click', () => {
+  if (!lastResult) { status.textContent = 'Clean the text before downloading it.'; return; }
+  download(lastResult.output, 'cleaned-text.txt', 'text/plain;charset=utf-8');
+});
+
+document.querySelector('#undo').addEventListener('click', () => {
+  output.value = source.value;
+  lastResult = null;
+  renderDiff([{operation: 'equal', original: source.value, output: source.value}]);
+  showChanges([]);
+  document.querySelector('#change-count').textContent = '0 changes';
+  status.textContent = 'Cleaning preview undone. The original text was not changed.';
+});
+
+document.querySelector('#reset').addEventListener('click', () => {
+  source.value = '';
+  output.value = '';
+  lastResult = null;
+  source.dispatchEvent(new Event('input'));
+  showFindings([]);
+  renderDiff([]);
+  showChanges([]);
+  document.querySelector('#change-count').textContent = '0 changes';
+  status.textContent = 'Workspace reset.';
 });
