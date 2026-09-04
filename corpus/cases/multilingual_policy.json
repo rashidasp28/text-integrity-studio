@@ -1,0 +1,35 @@
+[
+  {
+    "case_id": "arabic_zwnj_preserve_001",
+    "title": "Preserve contextual zero-width non-joiner",
+    "input": "می‌روم",
+    "options": ["safe_profile"],
+    "expected_output": "می‌روم",
+    "expected_findings": [{"code_point": "U+200C", "count": 1, "action": "preserve"}],
+    "source": {"kind": "project_policy", "reference": "Text Integrity Studio specification 1.0", "observed_at": "2026-09-04"},
+    "confidence": "proposed",
+    "tags": ["multilingual", "persian", "joiner", "safe-profile"]
+  },
+  {
+    "case_id": "emoji_zwj_preserve_001",
+    "title": "Preserve emoji zero-width joiner sequence",
+    "input": "👩‍🔬",
+    "options": ["safe_profile"],
+    "expected_output": "👩‍🔬",
+    "expected_findings": [{"code_point": "U+200D", "count": 1, "action": "preserve"}],
+    "source": {"kind": "project_policy", "reference": "Text Integrity Studio specification 1.0", "observed_at": "2026-09-04"},
+    "confidence": "proposed",
+    "tags": ["emoji", "joiner", "grapheme", "safe-profile"]
+  },
+  {
+    "case_id": "latin_cyrillic_confusable_flag_001",
+    "title": "Flag a Cyrillic lookalike in Latin prose",
+    "input": "pаypal",
+    "options": ["safe_profile"],
+    "expected_output": "pаypal",
+    "expected_findings": [{"code_point": "U+0430", "count": 1, "action": "flag"}],
+    "source": {"kind": "project_policy", "reference": "Text Integrity Studio specification 1.0", "observed_at": "2026-09-04"},
+    "confidence": "proposed",
+    "tags": ["confusables", "mixed-script", "safe-profile"]
+  }
+]
