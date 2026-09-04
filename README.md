@@ -4,7 +4,8 @@ Local-first Unicode inspection, safe text cleaning and optional meaning-preservi
 
 ## Project status
 
-Phase 0 is active: behavioural evidence and executable acceptance tests.
+Phase 1 is active: the behavioural evidence now drives a functional Python
+inspection and deterministic cleaning engine.
 
 The initial corpus contains 115 cases spanning character controls, whitespace,
 punctuation, compatibility normalisation, bidirectional text, contextual
@@ -27,6 +28,34 @@ Run tests:
 ```bash
 python -m unittest discover -s tests -v
 ```
+
+## Five-minute quick start
+
+Install the package in editable mode:
+
+```bash
+python -m pip install -e .
+```
+
+Inspect a UTF-8 file without changing it:
+
+```bash
+text-integrity inspect input.txt
+```
+
+Clean a file with the conservative Safe profile:
+
+```bash
+text-integrity clean input.txt --profile safe --output cleaned.txt --report audit.json
+```
+
+Use `-` as the input path to read from standard input. The Publishing profile
+also converts typographic dashes, quotation marks and ellipses. Encoding repair,
+NFKC normalisation, Markdown removal and confusable replacement remain explicit
+opt-in rules through repeated `--rule` options.
+
+The engine runs locally and does not transmit or retain source text. Findings
+identify unusual characters and policy decisions, not AI authorship.
 
 ## Confidence levels
 
