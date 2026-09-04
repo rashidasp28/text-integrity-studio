@@ -28,6 +28,7 @@
       <input id="file-input" type="file" accept=".txt,.md,text/plain,text/markdown" hidden>
       <button id="inspect" class="secondary">Inspect</button>
       <button id="clean">Clean text</button>
+      <button id="analyse-rewrite" class="secondary">Analyse style</button>
       <button id="review-integrity" class="secondary">Review integrity</button>
       <button id="inspect-payloads" class="secondary">Inspect hidden data</button>
       <button id="copy" class="secondary">Copy output</button>
@@ -88,6 +89,22 @@
     <section class="card changes-card">
       <div class="panel-title"><h2>Applied changes</h2><span id="applied-count">0 applied rules</span></div>
       <ol id="changes"><li>No cleaning has been run.</li></ol>
+    </section>
+
+    <section class="card rewrite-card">
+      <div class="panel-title"><h2>Meaning-preserving rewrite</h2><span id="rewrite-count">Not analysed</span></div>
+      <p class="disclaimer">Local deterministic suggestions only. Protected facts are validated before accepted changes are applied.</p>
+      <div id="protected-summary" class="protected-summary">No protected facts have been inventoried.</div>
+      <div class="table-wrap">
+        <table id="rewrite-suggestions" hidden>
+          <thead><tr><th>Accept</th><th>Original</th><th>Suggestion</th><th>Reason</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="rewrite-actions">
+        <button id="apply-rewrite" disabled>Apply accepted suggestions</button>
+        <button id="download-rewrite" class="secondary" disabled>Download rewrite audit</button>
+      </div>
     </section>
 
     <section class="card integrity-card">
