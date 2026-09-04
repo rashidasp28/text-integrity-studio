@@ -10,7 +10,7 @@
 
 Text Integrity Studio is a local-first application for inspecting, explaining, cleaning, normalising and optionally refining text. It combines the strongest observable ideas from AI Text Cleaner, LLM Pulse AI Watermark Remover, Originality.ai Invisible Text Detector, mature Unicode libraries such as ICU and ftfy, and the factual-preservation approach of the highly starred `blader/humanizer` project.
 
-The product must not claim that ordinary Unicode characters prove AI authorship or that deleting them makes text undetectable. It must distinguish verifiable character-level findings from statistical authorship signals. Its core promise is text integrity: the user can see what is present, understand why it may matter, choose what to change and verify that meaning and structure were preserved.
+The product does not claim that ordinary Unicode characters prove AI authorship or that deleting them makes text undetectable. It distinguishes verifiable character-level findings from statistical authorship signals. Its core promise is text integrity: the user can see what is present, understand why it may matter, choose what to change and verify that meaning and structure were preserved.
 
 The minimum viable product is an offline desktop and command-line tool that accepts plain text, reports suspicious or unusual Unicode characters, applies selectable deterministic cleaning rules, presents a reversible difference view and exports cleaned text plus an optional audit report. Rewriting is a later, separately enabled module. A later Pre-submission Integrity Review module may help users improve attribution, citation quality and originality, but it must not claim to reproduce, predict or evade Turnitin or any other proprietary detector.
 
