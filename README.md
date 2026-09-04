@@ -91,6 +91,14 @@ Alpha binaries are not yet code-signed. Operating systems may display an
 unknown-publisher warning. Verify the checksum before running a downloaded
 artifact. Signed installers remain a later release milestone.
 
+## Advanced hidden-data inspection
+
+Version 0.4 inventories every Unicode code point and gives invisible characters
+visible labels. It groups Unicode tag characters, zero-width binary sequences
+and variation-selector sequences, then attempts decoding only when a recognised
+codec produces printable UTF-8. Results are possible payloads, not confirmed AI
+watermarks or evidence of authorship.
+
 ## Confidence levels
 
 - `verified`: directly reproduced against a reference tool
