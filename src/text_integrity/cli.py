@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 from .engine import clean, inspect
+from .rewrite import analyse_rewrite, apply_rewrite
 
 
 def _read(path: str) -> str:
@@ -27,6 +28,11 @@ def build_parser() -> argparse.ArgumentParser:
     clean_parser.add_argument("--rule", action="append", default=[], help="Enable an additional rule")
     clean_parser.add_argument("--output", help="Write cleaned UTF-8 text to this file")
     clean_parser.add_argument("--report", help="Write a JSON audit report to this file")
+    rewrite_parser = subparsers.add_parser("rewrite", help="Analyse or apply deterministic style suggestions")
+    rewrite_parser.add_argument("input", help="UTF-8 text file or - for stdin")
+    rewrite_parser.add_argument("--accept", action="append", default=[], help="Accept a suggestion ID, for example S0001")
+    rewrite_parser.add_argument("--output", help="Write revised UTF-8 text to this file")
+    rewrite_parser.add_argument("--report", help="Write a JSON analysis or revision audit")
     studio_parser = subparsers.add_parser("studio", help="Open the local visual interface")
     studio_parser.add_argument("--host", default="127.0.0.1")
     studio_parser.add_argument("--port", default=8765, type=int)
@@ -45,6 +51,17 @@ def main(argv: list[str] | None = None) -> int:
         source = _read(args.input)
         if args.command == "inspect":
             print(json.dumps([finding.as_dict() for finding in inspect(source)], ensure_ascii=False, indent=2))
+            return 0
+        if args.command == "rewrite":
+            result = apply_rewrite(source, args.accept) if args.accept else analyse_rewrite(source)
+            if args.output:
+                if not args.accept:
+                    raise ValueError("--output requires at least one --accept suggestion ID.")
+                Path(args.output).write_text(result["output"], encoding="utf-8")
+            else:
+                print(json.dumps(result, ensure_ascii=False, indent=2))
+            if args.report:
+                Path(args.report).write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
             return 0
         result = clean(source, profile=args.profile, options=args.rule)
         if args.output:
