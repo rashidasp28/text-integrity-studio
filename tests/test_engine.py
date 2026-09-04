@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from text_integrity import __version__, clean, inspect
+from text_integrity import __version__, clean, inspect, inspect_payloads
 from text_integrity.studio import build_diff, process_api
 from text_integrity.integrity import review_integrity
 
@@ -18,7 +18,7 @@ def all_cases():
 
 class EngineTests(unittest.TestCase):
     def test_release_version(self):
-        self.assertEqual(__version__, "0.3.0")
+        self.assertEqual(__version__, "0.4.0")
 
     def test_every_corpus_case_has_exact_output(self):
         for case in all_cases():
@@ -97,6 +97,28 @@ class EngineTests(unittest.TestCase):
     def test_integrity_api_uses_local_reviewer(self):
         report = process_api("/api/integrity", {"text": "No citations here."})
         self.assertIn("Turnitin score prediction", report["disclaimer"])
+
+    def test_unicode_tag_payload_decodes(self):
+        encoded = "".join(chr(0xE0000 + ord(character)) for character in "hello") + chr(0xE007F)
+        report = inspect_payloads("Visible" + encoded)
+        self.assertEqual(report["payloads"][0]["codec"], "unicode-tags")
+        self.assertEqual(report["payloads"][0]["decoded_text"], "hello")
+
+    def test_zero_width_binary_payload_decodes(self):
+        encoded = "".join("\u200b" if bit == "0" else "\u200c" for bit in "01000001")
+        report = inspect_payloads(encoded)
+        self.assertEqual(report["payloads"][0]["decoded_text"], "A")
+
+    def test_variation_selector_payload_decodes(self):
+        encoded = "".join(chr(0xE0100 + value - 16) for value in b"test")
+        report = inspect_payloads("A" + encoded)
+        self.assertEqual(report["payloads"][0]["codec"], "variation-selector-bytes")
+        self.assertEqual(report["payloads"][0]["decoded_text"], "test")
+
+    def test_inventory_makes_invisible_character_visible(self):
+        report = process_api("/api/payloads", {"text": "A\u200bB"})
+        self.assertEqual(report["inventory"][1]["visible"], "<ZWSP>")
+        self.assertIn("not confirmed AI watermarks", report["disclaimer"])
 
 
 if __name__ == "__main__":
