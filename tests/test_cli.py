@@ -4,6 +4,7 @@ import tempfile
 import unittest
 from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
+from unittest.mock import patch
 
 from text_integrity.cli import main
 
@@ -13,7 +14,7 @@ class CliTests(unittest.TestCase):
         stdout = io.StringIO()
 
         with redirect_stdout(stdout):
-            with unittest.mock.patch("sys.stdin", io.StringIO("A\u200bB")):
+            with patch("sys.stdin", io.StringIO("A\u200bB")):
                 exit_code = main(["inspect", "-"])
 
         findings = json.loads(stdout.getvalue())
