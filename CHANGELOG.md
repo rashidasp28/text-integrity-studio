@@ -2,6 +2,15 @@
 
 All notable changes are documented here.
 
+## 0.7.0 - 2026-09-05
+
+- Begin Phase 5 with strict in-memory TXT, Markdown, HTML, DOCX and PDF ingestion.
+- Ignore HTML scripts and reject macro-bearing or unsafe DOCX archives.
+- Add PDF text-only extraction with page and character limits and explicit layout warnings.
+- Add Unicode script distribution and contextual multilingual warnings.
+- Add batch Safe-profile processing for up to 20 TXT or Markdown files.
+- Add document extraction and script-analysis CLI commands.
+
 ## 0.6.1 - 2026-09-04
 
 - Display every protected value with its category and exact character range.
