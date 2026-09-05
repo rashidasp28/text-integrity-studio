@@ -2,7 +2,7 @@
 
 ## Complete behavioural and developer specification
 
-**Status:** Phases 0 to 3 implemented; Phase 4 deterministic rewrite foundation and Phase 4A local integrity-review foundation implemented  
+**Status:** Phases 0 to 3 implemented; Phase 4 and 4A foundations implemented; Phase 5 document and multilingual beta implemented  
 **Specification version:** 1.1  
 **Date:** 4 September 2026
 
@@ -819,4 +819,4 @@ Publish signed Windows, macOS and Linux installers plus a Python CLI. Updates an
 
 ## Approval gate
 
-Phases 0 to 3, the Phase 4 deterministic rewrite foundation and the Phase 4A local integrity-review foundation have been implemented and tested. Phase 4 provides conservative style suggestions, individual acceptance controls, protected-fact validation and revision audit export through a local backend interface. Phase 4A provides citation reconciliation, quotation review, authorised user-corpus comparison, legitimate exclusions, passage evidence, reviewer decisions and audit export. Optional public-source search remains disabled. Further model work requires expanded entity-validation coverage, and no module may introduce detector-evasion behaviour.
+Phases 0 to 3, the Phase 4 deterministic rewrite foundation, Phase 4A local integrity review and the Phase 5 document and multilingual beta have been implemented and tested. Phase 5 adds strict in-memory TXT, Markdown, HTML, DOCX and PDF ingestion, batch TXT and Markdown processing, and contextual Unicode-script analysis. DOCX round-trip editing, OCR and layout-preserving PDF export remain unavailable and must not be implied. Optional public-source search remains disabled. Further model work requires expanded entity-validation coverage, and no module may introduce detector-evasion behaviour.
