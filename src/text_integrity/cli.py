@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import json
 import sys
 from pathlib import Path
 
 from .engine import clean, inspect
+from .documents import import_document
+from .multilingual import analyse_scripts
 from .rewrite import analyse_rewrite, apply_rewrite
 
 
@@ -33,6 +36,12 @@ def build_parser() -> argparse.ArgumentParser:
     rewrite_parser.add_argument("--accept", action="append", default=[], help="Accept a suggestion ID, for example S0001")
     rewrite_parser.add_argument("--output", help="Write revised UTF-8 text to this file")
     rewrite_parser.add_argument("--report", help="Write a JSON analysis or revision audit")
+    extract_parser = subparsers.add_parser("extract", help="Extract text from TXT, Markdown, HTML, DOCX or PDF")
+    extract_parser.add_argument("input", help="Document path")
+    extract_parser.add_argument("--output", help="Write extracted UTF-8 text to this file")
+    extract_parser.add_argument("--report", help="Write document metadata and warnings as JSON")
+    scripts_parser = subparsers.add_parser("scripts", help="Analyse Unicode scripts in a UTF-8 text file")
+    scripts_parser.add_argument("input", help="UTF-8 text file or - for stdin")
     studio_parser = subparsers.add_parser("studio", help="Open the local visual interface")
     studio_parser.add_argument("--host", default="127.0.0.1")
     studio_parser.add_argument("--port", default=8765, type=int)
@@ -48,6 +57,17 @@ def main(argv: list[str] | None = None) -> int:
 
             run_studio(args.host, args.port, open_browser=not args.no_browser)
             return 0
+        if args.command == "extract":
+            document_path = Path(args.input)
+            result = import_document(document_path.name, base64.b64encode(document_path.read_bytes()).decode("ascii"))
+            if args.output:
+                Path(args.output).write_text(result["text"], encoding="utf-8")
+            else:
+                sys.stdout.write(result["text"])
+            if args.report:
+                metadata = {key: value for key, value in result.items() if key != "text"}
+                Path(args.report).write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            return 0
         source = _read(args.input)
         if args.command == "inspect":
             print(json.dumps([finding.as_dict() for finding in inspect(source)], ensure_ascii=False, indent=2))
@@ -62,6 +82,9 @@ def main(argv: list[str] | None = None) -> int:
                 print(json.dumps(result, ensure_ascii=False, indent=2))
             if args.report:
                 Path(args.report).write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            return 0
+        if args.command == "scripts":
+            print(json.dumps(analyse_scripts(source), ensure_ascii=False, indent=2))
             return 0
         result = clean(source, profile=args.profile, options=args.rule)
         if args.output:
