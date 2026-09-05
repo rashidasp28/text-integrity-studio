@@ -24,11 +24,14 @@
         <option value="publishing">Publishing</option>
         <option value="custom">Custom</option>
       </select>
-      <label class="file-button" for="file-input">Open TXT/MD</label>
-      <input id="file-input" type="file" accept=".txt,.md,text/plain,text/markdown" hidden>
+      <label class="file-button" for="file-input">Open document</label>
+      <input id="file-input" type="file" accept=".txt,.md,.html,.htm,.docx,.pdf,text/plain,text/markdown,text/html,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
+      <label class="file-button" for="batch-input">Batch TXT/MD</label>
+      <input id="batch-input" type="file" accept=".txt,.md,text/plain,text/markdown" multiple hidden>
       <button id="inspect" class="secondary">Inspect</button>
       <button id="clean">Clean text</button>
       <button id="analyse-rewrite" class="secondary">Analyse style</button>
+      <button id="analyse-scripts" class="secondary">Analyse languages</button>
       <button id="review-integrity" class="secondary">Review integrity</button>
       <button id="inspect-payloads" class="secondary">Inspect hidden data</button>
       <button id="copy" class="secondary">Copy output</button>
@@ -36,6 +39,18 @@
       <button id="download" class="secondary">Download audit</button>
       <button id="undo" class="secondary">Undo cleaning</button>
       <button id="reset" class="danger">Reset</button>
+    </section>
+
+    <section id="document-summary-card" class="card document-card" hidden>
+      <div class="panel-title"><h2>Imported document</h2><span id="document-format"></span></div>
+      <div id="document-summary" class="document-summary"></div>
+      <p id="document-warnings" class="limitations"></p>
+    </section>
+
+    <section id="batch-card" class="card batch-card" hidden>
+      <div class="panel-title"><h2>Batch processing</h2><span id="batch-count"></span></div>
+      <div class="table-wrap"><table id="batch-results"><thead><tr><th>File</th><th>Characters</th><th>Findings</th><th>Changes</th></tr></thead><tbody></tbody></table></div>
+      <div class="integrity-actions"><button id="download-batch" class="secondary">Download batch results</button></div>
     </section>
 
     <details id="rules" class="card rules-card">
@@ -159,10 +174,16 @@
         </div>
       </details>
     </section>
+    <section class="card language-card">
+      <div class="panel-title"><h2>Multilingual analysis</h2><span id="language-status">Not analysed</span></div>
+      <p class="disclaimer">Script mixing is contextual and is not treated as an error by itself.</p>
+      <div class="table-wrap"><table id="script-results" hidden><thead><tr><th>Script</th><th>Characters</th><th>Percent</th></tr></thead><tbody></tbody></table></div>
+      <ul id="script-warnings"></ul>
+    </section>
     <p id="status" role="status"></p>
   </main>
 
-  <footer>Text Integrity Studio 0.6.1 · Unusual Unicode is not evidence of AI authorship.</footer>
+  <footer>Text Integrity Studio 0.7.0 beta · Unusual Unicode is not evidence of AI authorship.</footer>
   <script src="/app.js"></script>
 </body>
 </html>
