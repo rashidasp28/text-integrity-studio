@@ -10,6 +10,7 @@ let lastPayloadResult = null;
 let lastRewriteAnalysis = null;
 let lastRewriteResult = null;
 let comparisonSources = [];
+let lastBatchResult = null;
 const profileRules = {
   safe: ['remove_hidden', 'convert_nbsp', 'normalize_unusual_spaces', 'remove_trailing_whitespace'],
   publishing: ['remove_hidden', 'convert_nbsp', 'normalize_unusual_spaces', 'remove_trailing_whitespace', 'normalize_dashes', 'normalize_quotes', 'convert_ellipsis']
@@ -120,13 +121,74 @@ function syncRules() {
 document.querySelector('#profile').addEventListener('change', syncRules);
 syncRules();
 
+function bytesToBase64(buffer) {
+  const bytes = new Uint8Array(buffer);
+  let binary = '';
+  for (let offset = 0; offset < bytes.length; offset += 0x8000) {
+    binary += String.fromCharCode(...bytes.subarray(offset, offset + 0x8000));
+  }
+  return btoa(binary);
+}
+
 document.querySelector('#file-input').addEventListener('change', async event => {
   const file = event.target.files[0];
   if (!file) return;
-  if (file.size > 2 * 1024 * 1024) { status.textContent = 'File exceeds the 2 MB limit.'; return; }
-  source.value = await file.text();
-  source.dispatchEvent(new Event('input'));
-  status.textContent = `Opened ${file.name}.`;
+  if (file.size > 4 * 1024 * 1024) { status.textContent = 'Document exceeds the 4 MB import limit.'; return; }
+  try {
+    const response = await fetch('/api/document/import', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({name: file.name, content: bytesToBase64(await file.arrayBuffer())})
+    });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || 'Document import failed.');
+    source.value = result.text;
+    source.dispatchEvent(new Event('input'));
+    document.querySelector('#document-summary-card').hidden = false;
+    document.querySelector('#document-format').textContent = result.format.toUpperCase();
+    const summary = document.querySelector('#document-summary');
+    summary.replaceChildren();
+    const values = {name: result.name, characters: result.character_count, ...result.structure};
+    for (const [key, value] of Object.entries(values)) {
+      const item = document.createElement('span');
+      item.textContent = `${key.replaceAll('_', ' ')}: ${value}`;
+      summary.appendChild(item);
+    }
+    document.querySelector('#document-warnings').textContent = result.warnings.join(' ');
+    status.textContent = `Imported ${file.name} locally.`;
+  } catch (error) { status.textContent = error.message; }
+});
+
+document.querySelector('#batch-input').addEventListener('change', async event => {
+  const files = [...event.target.files];
+  const total = files.reduce((sum, file) => sum + file.size, 0);
+  if (files.length > 20 || total > 2 * 1024 * 1024) {
+    status.textContent = 'Batch processing is limited to 20 files and 2 MB.';
+    return;
+  }
+  try {
+    const items = await Promise.all(files.map(async file => ({name: file.name, text: await file.text()})));
+    const response = await fetch('/api/batch', {
+      method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({files: items})
+    });
+    lastBatchResult = await response.json();
+    if (!response.ok) throw new Error(lastBatchResult.error || 'Batch processing failed.');
+    const batchBody = document.querySelector('#batch-results tbody');
+    batchBody.replaceChildren();
+    for (const item of lastBatchResult.files) {
+      const row = document.createElement('tr');
+      for (const value of [item.name, item.characters, item.findings, item.changes]) {
+        const cell = document.createElement('td'); cell.textContent = value; row.appendChild(cell);
+      }
+      batchBody.appendChild(row);
+    }
+    document.querySelector('#batch-card').hidden = false;
+    document.querySelector('#batch-count').textContent = `${lastBatchResult.file_count} files`;
+    status.textContent = 'Batch files processed locally with the Safe profile.';
+  } catch (error) { status.textContent = error.message; }
+});
+
+document.querySelector('#download-batch').addEventListener('click', () => {
+  if (lastBatchResult) download(JSON.stringify(lastBatchResult, null, 2), 'text-integrity-batch.json', 'application/json');
 });
 
 document.querySelector('#corpus-input').addEventListener('change', async event => {
@@ -164,6 +226,31 @@ function showFindings(findings) {
 document.querySelector('#inspect').addEventListener('click', async () => {
   try { showFindings((await request('/api/inspect')).findings); }
   catch (error) { status.textContent = error.message; }
+});
+
+document.querySelector('#analyse-scripts').addEventListener('click', async () => {
+  try {
+    const result = await request('/api/scripts');
+    const scriptTable = document.querySelector('#script-results');
+    const scriptBody = scriptTable.querySelector('tbody');
+    scriptBody.replaceChildren();
+    for (const item of result.scripts) {
+      const row = document.createElement('tr');
+      for (const value of [item.script, item.characters, item.percent]) {
+        const cell = document.createElement('td'); cell.textContent = value; row.appendChild(cell);
+      }
+      scriptBody.appendChild(row);
+    }
+    scriptTable.hidden = result.scripts.length === 0;
+    const warnings = document.querySelector('#script-warnings');
+    warnings.replaceChildren();
+    for (const warning of result.warnings) {
+      const item = document.createElement('li'); item.textContent = warning.message; warnings.appendChild(item);
+    }
+    document.querySelector('#language-status').textContent = result.dominant_script
+      ? `Dominant script: ${result.dominant_script}` : 'No letter scripts detected';
+    status.textContent = result.policy;
+  } catch (error) { status.textContent = error.message; }
 });
 
 document.querySelector('#clean').addEventListener('click', async () => {
@@ -391,6 +478,7 @@ document.querySelector('#undo').addEventListener('click', () => {
   lastRewriteAnalysis = null;
   lastRewriteResult = null;
   comparisonSources = [];
+  lastBatchResult = null;
   renderDiff([{operation: 'equal', original: source.value, output: source.value}]);
   showChanges([]);
   document.querySelector('#change-count').textContent = '0 changes';
@@ -415,6 +503,13 @@ document.querySelector('#reset').addEventListener('click', () => {
   document.querySelector('#transparency-statement').value = '';
   document.querySelector('#corpus-input').value = '';
   document.querySelector('#corpus-count').textContent = 'No comparison files';
+  document.querySelector('#document-summary-card').hidden = true;
+  document.querySelector('#batch-card').hidden = true;
+  document.querySelector('#batch-results tbody').replaceChildren();
+  document.querySelector('#script-results').hidden = true;
+  document.querySelector('#script-results tbody').replaceChildren();
+  document.querySelector('#script-warnings').replaceChildren();
+  document.querySelector('#language-status').textContent = 'Not analysed';
   document.querySelector('#payloads').hidden = true;
   document.querySelector('#payloads tbody').replaceChildren();
   document.querySelector('#inventory tbody').replaceChildren();
