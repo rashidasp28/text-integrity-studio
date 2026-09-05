@@ -15,11 +15,13 @@ from typing import Any
 from urllib.parse import urlparse
 
 from .engine import clean, inspect
+from .documents import import_document
 from .integrity import build_integrity_audit, review_integrity
+from .multilingual import analyse_scripts
 from .payloads import inspect_payloads
 from .rewrite import analyse_rewrite, apply_rewrite
 
-MAX_REQUEST_BYTES = 2 * 1024 * 1024
+MAX_REQUEST_BYTES = 6 * 1024 * 1024
 WEB_ROOT = files("text_integrity").joinpath("web")
 
 
@@ -38,6 +40,26 @@ def build_diff(original: str, output: str) -> list[dict[str, str]]:
 
 
 def process_api(path: str, payload: dict[str, Any]) -> Any:
+    if path == "/api/document/import":
+        return import_document(payload.get("name"), payload.get("content"))
+    if path == "/api/batch":
+        batch_files = payload.get("files")
+        if not isinstance(batch_files, list) or not all(
+            isinstance(item, dict) and isinstance(item.get("name"), str) and isinstance(item.get("text"), str)
+            for item in batch_files
+        ):
+            raise ValueError("Batch files must contain string 'name' and 'text' fields.")
+        if len(batch_files) > 20 or sum(len(item["text"].encode("utf-8")) for item in batch_files) > 2 * 1024 * 1024:
+            raise ValueError("Batch processing is limited to 20 files and 2 MB of UTF-8 text.")
+        results = []
+        for item in batch_files:
+            processed = clean(item["text"], profile="safe").as_dict()
+            results.append({
+                "name": item["name"], "characters": len(item["text"]),
+                "findings": len(processed["findings"]), "changes": len(processed["edits"]),
+                "output": processed["output"], "audit": processed,
+            })
+        return {"files": results, "file_count": len(results), "processing": "local-in-memory"}
     text = payload.get("text")
     if not isinstance(text, str):
         raise ValueError("The 'text' field must be a string.")
@@ -70,6 +92,8 @@ def process_api(path: str, payload: dict[str, Any]) -> Any:
         )
     if path == "/api/payloads":
         return inspect_payloads(text)
+    if path == "/api/scripts":
+        return analyse_scripts(text)
     if path == "/api/rewrite/analyse":
         return analyse_rewrite(text, backend=payload.get("backend", "deterministic"))
     if path == "/api/rewrite/apply":
