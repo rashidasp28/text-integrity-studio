@@ -134,6 +134,24 @@ Citation and quotation findings support reviewer decisions, legitimate
 exclusions and a downloadable audit. An optional authorship transparency
 statement can document permitted assistance and the author's verification.
 
+## Phase 5 document and multilingual beta
+
+Version 0.7 imports TXT, Markdown, HTML, DOCX and PDF documents entirely in
+memory. HTML scripts and styles are ignored. DOCX archives are checked for
+unsafe paths, excessive expansion and macros before text extraction. PDF
+support extracts selectable text only and clearly warns that layout-preserving
+PDF export is unavailable. PDF extraction uses the maintained `pypdf` reader.
+
+The multilingual report inventories major Unicode scripts and preserves join
+and bidirectional controls for contextual review. Mixed scripts are informative
+findings rather than automatic errors. Batch processing accepts up to 20 TXT or
+Markdown files and applies the conservative Safe profile.
+
+```bash
+text-integrity extract report.docx --output report.txt --report import.json
+text-integrity scripts report.txt
+```
+
 ## Confidence levels
 
 - `verified`: directly reproduced against a reference tool
