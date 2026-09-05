@@ -1,12 +1,15 @@
 import json
+import base64
+import io
 import sys
 import unittest
+import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from text_integrity import __version__, analyse_rewrite, apply_rewrite, clean, inspect, inspect_payloads
+from text_integrity import __version__, analyse_rewrite, analyse_scripts, apply_rewrite, clean, import_document, inspect, inspect_payloads
 from text_integrity.studio import build_diff, process_api
 from text_integrity.integrity import build_integrity_audit, review_integrity
 
@@ -18,7 +21,7 @@ def all_cases():
 
 class EngineTests(unittest.TestCase):
     def test_release_version(self):
-        self.assertEqual(__version__, "0.6.1")
+        self.assertEqual(__version__, "0.7.0")
 
     def test_rewrite_analysis_returns_every_protected_value(self):
         text = "Samples 12 and 13 were tested at 7.3 mW on 9 September 2026 (Smith, 2024)."
@@ -29,6 +32,48 @@ class EngineTests(unittest.TestCase):
         self.assertIn("7.3 mW", values)
         self.assertIn("9 September 2026", values)
         self.assertIn("(Smith, 2024)", values)
+
+    def test_html_document_adapter_ignores_scripts(self):
+        data = b"<h1>Title</h1><p>Visible text</p><script>secret()</script>"
+        result = import_document("study.html", base64.b64encode(data).decode("ascii"))
+        self.assertEqual(result["format"], "html")
+        self.assertIn("Title", result["text"])
+        self.assertNotIn("secret", result["text"])
+
+    def test_docx_document_adapter_extracts_paragraphs(self):
+        xml = b'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        <w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>
+        <w:p><w:r><w:t>First paragraph.</w:t></w:r></w:p><w:p><w:r><w:t>Second paragraph.</w:t></w:r></w:p>
+        </w:body></w:document>'''
+        stream = io.BytesIO()
+        with zipfile.ZipFile(stream, "w", zipfile.ZIP_DEFLATED) as archive:
+            archive.writestr("word/document.xml", xml)
+        result = import_document("study.docx", base64.b64encode(stream.getvalue()).decode("ascii"))
+        self.assertEqual(result["text"], "First paragraph.\nSecond paragraph.")
+        self.assertEqual(result["structure"]["paragraphs"], 2)
+
+    def test_docx_adapter_rejects_macro_content(self):
+        stream = io.BytesIO()
+        with zipfile.ZipFile(stream, "w") as archive:
+            archive.writestr("word/document.xml", "<document/>")
+            archive.writestr("word/vbaProject.bin", b"macro")
+        with self.assertRaisesRegex(ValueError, "Macro-enabled"):
+            import_document("unsafe.docx", base64.b64encode(stream.getvalue()).decode("ascii"))
+
+    def test_multilingual_analysis_preserves_context(self):
+        report = analyse_scripts("Latin text العربية العربية")
+        scripts = {item["script"] for item in report["scripts"]}
+        self.assertIn("Latin", scripts)
+        self.assertIn("Arabic", scripts)
+        self.assertIn("not treated as an error", report["policy"])
+
+    def test_batch_api_processes_multiple_text_files(self):
+        report = process_api("/api/batch", {"files": [
+            {"name": "one.txt", "text": "A\u200bB"},
+            {"name": "two.md", "text": "Plain text"},
+        ]})
+        self.assertEqual(report["file_count"], 2)
+        self.assertEqual(report["files"][0]["output"], "AB")
 
     def test_every_corpus_case_has_exact_output(self):
         for case in all_cases():
