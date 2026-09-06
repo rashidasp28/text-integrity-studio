@@ -2,6 +2,17 @@
 
 All notable changes are documented here.
 
+## 0.8.0 release candidate - 2026-09-06
+
+- Add a fail-closed release-readiness verifier and explicit v1.0 approval gates.
+- Add Bandit static analysis and pip-audit dependency scanning.
+- Generate and retain a CycloneDX software bill of materials.
+- Add Dependabot configuration and a release-focused pull request template.
+- Add user, security, licensing, signing, acceptance-test and release documentation.
+- Record the existing MIT project licence and the reviewed runtime dependency licence.
+- Pin the runtime PDF dependency for reproducible dependency resolution.
+- Expand automated tests for offline assets and loopback-only server binding.
+
 ## 0.7.0 - 2026-09-05
 
 - Begin Phase 5 with strict in-memory TXT, Markdown, HTML, DOCX and PDF ingestion.

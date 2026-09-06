@@ -9,6 +9,7 @@ Use Python 3.11 or newer. Before proposing a change, run:
 ```bash
 python scripts/validate_corpus.py
 python -m unittest discover -s tests -v
+python scripts/release_check.py
 ```
 
 New deterministic behaviour requires a behavioural corpus case. Character
@@ -27,3 +28,7 @@ integrity detector will not be accepted.
 Keep changes focused, explain the user-visible behaviour and state how it was
 tested. Do not commit source documents, personal data, model weights or build
 artifacts.
+
+Release-related pull requests must also update the changelog, acceptance-test
+evidence, third-party notices and SBOM where applicable. Version 1.0.0 requires
+explicit licence and signing approval.

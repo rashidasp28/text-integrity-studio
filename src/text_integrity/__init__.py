@@ -26,4 +26,4 @@ __all__ = [
     "protected_spans",
 ]
 
-__version__ = "0.7.0"
+__version__ = "0.8.0"

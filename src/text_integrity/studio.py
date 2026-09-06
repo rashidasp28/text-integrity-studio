@@ -108,7 +108,7 @@ def process_api(path: str, payload: dict[str, Any]) -> Any:
 
 
 class StudioHandler(BaseHTTPRequestHandler):
-    server_version = "TextIntegrityStudio/0.1"
+    server_version = "TextIntegrityStudio/0.8.0"
 
     def _json(self, status: HTTPStatus, body: Any) -> None:
         content = json.dumps(body, ensure_ascii=False).encode("utf-8")
@@ -124,7 +124,7 @@ class StudioHandler(BaseHTTPRequestHandler):
         try:
             length = int(self.headers.get("Content-Length", "0"))
             if length > MAX_REQUEST_BYTES:
-                self._json(HTTPStatus.REQUEST_ENTITY_TOO_LARGE, {"error": "Text exceeds 2 MB."})
+                self._json(HTTPStatus.REQUEST_ENTITY_TOO_LARGE, {"error": "Request exceeds the 6 MB API limit."})
                 return
             payload = json.loads(self.rfile.read(length).decode("utf-8"))
             self._json(HTTPStatus.OK, process_api(urlparse(self.path).path, payload))

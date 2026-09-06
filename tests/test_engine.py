@@ -21,7 +21,7 @@ def all_cases():
 
 class EngineTests(unittest.TestCase):
     def test_release_version(self):
-        self.assertEqual(__version__, "0.7.0")
+        self.assertEqual(__version__, "0.8.0")
 
     def test_rewrite_analysis_returns_every_protected_value(self):
         text = "Samples 12 and 13 were tested at 7.3 mW on 9 September 2026 (Smith, 2024)."
@@ -74,6 +74,19 @@ class EngineTests(unittest.TestCase):
         ]})
         self.assertEqual(report["file_count"], 2)
         self.assertEqual(report["files"][0]["output"], "AB")
+
+    def test_visual_application_contains_no_remote_requests(self):
+        web_root = ROOT / "src" / "text_integrity" / "web"
+        for path in web_root.iterdir():
+            if path.is_file():
+                content = path.read_text(encoding="utf-8")
+                self.assertNotIn("fetch('http", content)
+                self.assertNotIn('fetch("http', content)
+
+    def test_server_rejects_non_loopback_binding(self):
+        from text_integrity.studio import run_studio
+        with self.assertRaisesRegex(ValueError, "localhost"):
+            run_studio("0.0.0.0", open_browser=False)
 
     def test_every_corpus_case_has_exact_output(self):
         for case in all_cases():

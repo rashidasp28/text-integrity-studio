@@ -4,9 +4,9 @@ Local-first Unicode inspection, safe text cleaning and optional meaning-preservi
 
 ## Project status
 
-Phases 1 to 3 and the first Phase 4 deterministic rewrite build are active.
-The behavioural evidence drives the Python inspection and cleaning engine,
-local visual application and protected-fact rewrite workflow.
+Phases 0 to 5 are implemented. Version 0.8.0 is the Phase 6 release candidate.
+It adds automated security evidence, SBOM generation, release gates and public
+documentation. It is not the final signed v1.0.0 release.
 
 The initial corpus contains 115 cases spanning character controls, whitespace,
 punctuation, compatibility normalisation, bidirectional text, contextual
@@ -67,8 +67,8 @@ text-integrity studio
 ```
 
 The tool opens `http://127.0.0.1:8765` in the default browser. The interface
-and processing API bind only to the local computer, impose a 2 MB request
-limit, retain no text and make no external requests. Press `Ctrl+C` in the
+and processing API bind only to the local computer, impose a 6 MB request
+limit with narrower format-specific limits, retain no text and make no external requests. Press `Ctrl+C` in the
 terminal to stop it.
 
 The visual interface supports TXT and Markdown import, Safe, Publishing and
@@ -81,14 +81,14 @@ Bibliography section, and flags long quotations without nearby recognised
 citations. Its results are local diagnostics, not plagiarism findings, AI
 classifications or predictions of a Turnitin score.
 
-## Standalone alpha builds
+## Standalone release-candidate builds
 
-Version 0.3 adds automated standalone builds for Windows, macOS and Linux.
+Automated standalone builds are available for Windows, macOS and Linux.
 Successful GitHub Actions runs publish one-file application artifacts with a
 SHA-256 checksum. Open the downloaded application and keep its terminal window
 open while using the local browser interface. Press `Ctrl+C` to stop it.
 
-Alpha binaries are not yet code-signed. Operating systems may display an
+Release-candidate binaries are not yet code-signed. Operating systems may display an
 unknown-publisher warning. Verify the checksum before running a downloaded
 artifact. Signed installers remain a later release milestone.
 
@@ -158,6 +158,15 @@ text-integrity scripts report.txt
 - `documented`: stated in authoritative documentation but not reproduced
 - `inferred`: reasonable hypothesis requiring testing
 - `proposed`: desired Text Integrity Studio behaviour
+
+## Release candidate status
+
+The Release readiness workflow runs regression tests, Bandit static analysis,
+pip-audit and CycloneDX SBOM generation. Platform builds include checksums and a
+machine-readable readiness report. The project licence and platform signing
+credentials are not yet approved, so v1.0.0 remains blocked. See
+`docs/ACCEPTANCE-TESTS.md` and `docs/RELEASE-CHECKLIST.md` before approving a
+public production release.
 
 ## Licence
 

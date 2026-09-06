@@ -4,10 +4,10 @@ build-backend = "hatchling.build"
 
 [project]
 name = "text-integrity-studio"
-version = "0.7.0"
+version = "0.8.0"
 description = "Local-first Unicode inspection and safe text-cleaning framework"
 requires-python = ">=3.11"
-dependencies = ["pypdf>=6.17,<7"]
+dependencies = ["pypdf==6.17.0"]
 
 [project.scripts]
 text-integrity = "text_integrity.cli:main"

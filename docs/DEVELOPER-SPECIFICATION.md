@@ -2,7 +2,7 @@
 
 ## Complete behavioural and developer specification
 
-**Status:** Phases 0 to 3 implemented; Phase 4 and 4A foundations implemented; Phase 5 document and multilingual beta implemented  
+**Status:** Phases 0 to 5 implemented; Phase 6 v0.8.0 release candidate implemented; v1.0.0 pending signed builds and cross-platform acceptance approval  
 **Specification version:** 1.1  
 **Date:** 4 September 2026
 
@@ -741,7 +741,8 @@ PDF editing should remain out of scope until layout-preserving reconstruction is
 **Deliverables:** Version 1.0.0.  
 **Validation:** Reproducible builds, clean security scan and acceptance-test completion.  
 **Dependencies:** All release-blocking defects resolved.  
-**Risks:** Long-term model and dependency maintenance.
+**Risks:** Long-term model and dependency maintenance.  
+**Implementation status:** Version 0.8.0 provides the release-readiness verifier, automated Bandit and dependency audits, CycloneDX SBOM generation, MIT and third-party licensing records, security and user documentation, Dependabot, pull-request checks, acceptance-test procedures and checksummed Windows, macOS and Linux release-candidate builds. Version 1.0.0 remains blocked until platform signing is configured, cross-platform acceptance evidence is approved and every release-blocking defect is closed.
 
 ---
 
@@ -819,4 +820,4 @@ Publish signed Windows, macOS and Linux installers plus a Python CLI. Updates an
 
 ## Approval gate
 
-Phases 0 to 3, the Phase 4 deterministic rewrite foundation, Phase 4A local integrity review and the Phase 5 document and multilingual beta have been implemented and tested. Phase 5 adds strict in-memory TXT, Markdown, HTML, DOCX and PDF ingestion, batch TXT and Markdown processing, and contextual Unicode-script analysis. DOCX round-trip editing, OCR and layout-preserving PDF export remain unavailable and must not be implied. Optional public-source search remains disabled. Further model work requires expanded entity-validation coverage, and no module may introduce detector-evasion behaviour.
+Phases 0 to 5 and the Phase 6 v0.8.0 release candidate have been implemented and locally validated. Phase 6 adds automated release gates, security and dependency scanning, CycloneDX SBOM generation, MIT and third-party licensing records, checksummed release-candidate builds, user and security documentation, contributor workflows and a 16-case cross-platform acceptance procedure. DOCX round-trip editing, OCR and layout-preserving PDF export remain unavailable and must not be implied. Optional public-source search remains disabled. Version 1.0.0 must not be tagged until platform signing, cross-platform acceptance evidence and all release-blocking defects are approved. Further model work requires expanded entity-validation coverage, and no module may introduce detector-evasion behaviour.

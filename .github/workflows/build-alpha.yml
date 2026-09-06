@@ -1,4 +1,4 @@
-name: Build standalone alpha
+name: Build standalone release candidate
 
 on:
   workflow_dispatch:
@@ -37,7 +37,10 @@ jobs:
       - name: Install build tools
         run: python -m pip install . pyinstaller==6.15.0
       - name: Run regression tests
-        run: python -m unittest discover -s tests -v
+        run: |
+          python scripts/release_check.py --output release-readiness.json
+          python scripts/validate_corpus.py
+          python -m unittest discover -s tests -v
       - name: Build standalone application
         run: pyinstaller --clean --noconfirm text-integrity-studio.spec
       - name: Record checksum
@@ -55,6 +58,7 @@ jobs:
           path: |
             dist/Text-Integrity-Studio*
             dist/SHA256SUMS.txt
+            release-readiness.json
           if-no-files-found: error
           retention-days: 14
 
