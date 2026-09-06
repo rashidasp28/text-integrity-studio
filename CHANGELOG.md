@@ -11,6 +11,7 @@ All notable changes are documented here.
 - Add user, security, licensing, signing, acceptance-test and release documentation.
 - Record the existing MIT project licence and the reviewed runtime dependency licence.
 - Pin the runtime PDF dependency for reproducible dependency resolution.
+- Parse DOCX XML through defusedxml and reject prohibited XML constructs.
 - Expand automated tests for offline assets and loopback-only server binding.
 
 ## 0.7.0 - 2026-09-05

@@ -60,6 +60,16 @@ class EngineTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Macro-enabled"):
             import_document("unsafe.docx", base64.b64encode(stream.getvalue()).decode("ascii"))
 
+    def test_docx_adapter_rejects_xml_entities(self):
+        xml = b'''<!DOCTYPE document [<!ENTITY probe "unsafe">]>
+        <w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+        <w:body><w:p><w:r><w:t>&probe;</w:t></w:r></w:p></w:body></w:document>'''
+        stream = io.BytesIO()
+        with zipfile.ZipFile(stream, "w") as archive:
+            archive.writestr("word/document.xml", xml)
+        with self.assertRaisesRegex(ValueError, "prohibited XML"):
+            import_document("entity.docx", base64.b64encode(stream.getvalue()).decode("ascii"))
+
     def test_multilingual_analysis_preserves_context(self):
         report = analyse_scripts("Latin text العربية العربية")
         scripts = {item["script"] for item in report["scripts"]}

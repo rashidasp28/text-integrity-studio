@@ -7,7 +7,7 @@ name = "text-integrity-studio"
 version = "0.8.0"
 description = "Local-first Unicode inspection and safe text-cleaning framework"
 requires-python = ">=3.11"
-dependencies = ["pypdf==6.17.0"]
+dependencies = ["defusedxml==0.7.1", "pypdf==6.17.0"]
 
 [project.scripts]
 text-integrity = "text_integrity.cli:main"

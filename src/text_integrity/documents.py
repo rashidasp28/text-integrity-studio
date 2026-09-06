@@ -8,7 +8,9 @@ import zipfile
 from html.parser import HTMLParser
 from pathlib import PurePath
 from typing import Any
-from xml.etree import ElementTree
+
+from defusedxml import ElementTree
+from defusedxml.common import DefusedXmlException
 
 
 MAX_FILE_BYTES = 4 * 1024 * 1024
@@ -111,8 +113,8 @@ def _extract_docx(data: bytes) -> tuple[str, dict[str, Any], list[str]]:
         raise ValueError("DOCX document XML exceeds the safety limit.")
     try:
         root = ElementTree.fromstring(xml)
-    except ElementTree.ParseError as error:
-        raise ValueError("DOCX document XML is malformed.") from error
+    except (ElementTree.ParseError, DefusedXmlException) as error:
+        raise ValueError("DOCX document XML is malformed or contains prohibited XML constructs.") from error
     namespace = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
     paragraphs: list[str] = []
     for paragraph in root.iter(namespace + "p"):
