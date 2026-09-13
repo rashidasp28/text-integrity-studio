@@ -163,11 +163,15 @@ text-integrity scripts report.txt
 
 The Release readiness workflow runs regression tests, Bandit static analysis,
 pip-audit and CycloneDX SBOM generation. Platform builds include checksums and a
-machine-readable readiness report. The project licence and platform signing
-credentials are not yet approved, so v1.0.0 remains blocked. See
+machine-readable readiness report. The MIT project licence and direct runtime
+dependency licences are documented. Platform signing and cross-platform manual
+acceptance remain incomplete, so v1.0.0 remains blocked. See
 `docs/ACCEPTANCE-TESTS.md` and `docs/RELEASE-CHECKLIST.md` before approving a
 public production release.
 
 ## Licence
 
-No production licence has been selected yet. Phase 0 contains independently authored specifications and test data.
+Text Integrity Studio is distributed under the [MIT License](LICENSE). Direct
+runtime dependency licences and review notes are recorded in
+[`docs/LICENSING-STATUS.md`](docs/LICENSING-STATUS.md) and
+[`docs/THIRD-PARTY-NOTICES.md`](docs/THIRD-PARTY-NOTICES.md).
