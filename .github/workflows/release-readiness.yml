@@ -40,7 +40,7 @@ jobs:
         run: |
           python scripts/validate_corpus.py
           python -m unittest discover -s tests -v
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: release-readiness-evidence

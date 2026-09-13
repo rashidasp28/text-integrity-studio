@@ -52,7 +52,7 @@ jobs:
           else
             shasum -a 256 Text-Integrity-Studio* > SHA256SUMS.txt
           fi
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.artifact }}
           path: |
