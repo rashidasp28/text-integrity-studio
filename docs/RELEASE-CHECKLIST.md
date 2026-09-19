@@ -2,16 +2,31 @@
 
 ## Automated gates
 
-Evidence last verified on 6 September 2026 in the [release-readiness run](https://github.com/rashidasp28/text-integrity-studio/actions/runs/34022808882) and the [three-platform build run](https://github.com/rashidasp28/text-integrity-studio/actions/runs/34022808885).
+Regression and security evidence was last verified on 13 September 2026 against
+the `pypdf` 6.18.0 update in the
+[Phase 0 corpus validation run](https://github.com/rashidasp28/text-integrity-studio/actions/runs/34771426309)
+and the
+[release-readiness run](https://github.com/rashidasp28/text-integrity-studio/actions/runs/34771426305).
+The dependency update was merged to `main` as commit
+`679046303e2c46eda463d47a98fafb58e2e8e095`.
 
 - [x] Behavioral and unit tests pass
 - [x] Bandit static scan passes
 - [x] pip-audit reports no known dependency vulnerabilities
-- [x] CycloneDX SBOM is attached
+- [x] CycloneDX SBOM is generated
+
+The three-platform build and checksum evidence was last verified on 6 September
+2026 in the
+[three-platform build run](https://github.com/rashidasp28/text-integrity-studio/actions/runs/34022808885)
+for commit `827eddf4ad95fcc25dc0d5ea5b1f97ba0f591634`.
+
 - [x] Three platform packages build successfully
 - [x] Checksums are included
+- [ ] Three-platform builds rerun after the `pypdf` 6.18.0 update
 
-These checks apply to commit `827eddf4ad95fcc25dc0d5ea5b1f97ba0f591634`. Run them again after any code, dependency, workflow or packaging change.
+Do not treat the earlier platform artifacts as final release evidence. Rerun the
+three-platform build from the current `main` branch before approving a release
+candidate.
 
 ## Human gates
 
