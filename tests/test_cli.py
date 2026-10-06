@@ -97,6 +97,65 @@ class CliTests(unittest.TestCase):
             self.assertFalse(output.exists())
             self.assertIn("--output requires at least one --accept", stderr.getvalue())
 
+    def test_extract_writes_html_text_and_metadata_report(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "study.html"
+            output = root / "study.txt"
+            report = root / "import.json"
+            source.write_text(
+                "<h1>Study title</h1><p>Visible text</p><script>hidden()</script>",
+                encoding="utf-8",
+            )
+
+            exit_code = main([
+                "extract",
+                str(source),
+                "--output",
+                str(output),
+                "--report",
+                str(report),
+            ])
+
+            self.assertEqual(exit_code, 0)
+            self.assertEqual(
+                output.read_text(encoding="utf-8"),
+                "Study title\nVisible text",
+            )
+            metadata = json.loads(report.read_text(encoding="utf-8"))
+            self.assertEqual(metadata["format"], "html")
+            self.assertEqual(metadata["structure"], {"blocks": 2})
+            self.assertEqual(metadata["processing"], "local-in-memory")
+            self.assertNotIn("text", metadata)
+
+    def test_scripts_reads_stdin_and_emits_json(self):
+        stdout = io.StringIO()
+
+        with redirect_stdout(stdout):
+            with patch("sys.stdin", io.StringIO("Latin text العربية العربية")):
+                exit_code = main(["scripts", "-"])
+
+        report = json.loads(stdout.getvalue())
+        scripts = {item["script"] for item in report["scripts"]}
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(scripts, {"Latin", "Arabic"})
+        self.assertEqual(report["warnings"][0]["category"], "mixed-scripts")
+
+    def test_extract_rejects_unsupported_document_type(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "study.csv"
+            source.write_text("heading,value\nexample,1\n", encoding="utf-8")
+            stderr = io.StringIO()
+
+            with redirect_stderr(stderr):
+                exit_code = main(["extract", str(source)])
+
+            self.assertEqual(exit_code, 2)
+            self.assertIn(
+                "Supported document types are TXT, Markdown, HTML, DOCX and PDF",
+                stderr.getvalue(),
+            )
+
     def test_missing_input_returns_controlled_error(self):
         stderr = io.StringIO()
 
