@@ -124,7 +124,9 @@ class CliTests(unittest.TestCase):
             )
             metadata = json.loads(report.read_text(encoding="utf-8"))
             self.assertEqual(metadata["format"], "html")
+            self.assertEqual(metadata["character_count"], len("Study title\nVisible text"))
             self.assertEqual(metadata["structure"], {"blocks": 2})
+            self.assertEqual(metadata["warnings"], [])
             self.assertEqual(metadata["processing"], "local-in-memory")
             self.assertNotIn("text", metadata)
 
